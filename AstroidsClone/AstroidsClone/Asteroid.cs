@@ -28,8 +28,8 @@ namespace AstroidsClone
 
         public void createAsteroid(Random rnd)
         {
-            int rndX = rnd.Next(20) - 10;
-            int rndY = rnd.Next(20) - 10;
+            int rndX = rnd.Next(10) - 5;
+            int rndY = rnd.Next(10) - 5;
             vector = new Point(rndX, rndY);   
 
             //first point of the shape
@@ -65,6 +65,15 @@ namespace AstroidsClone
             {
                 shape[i].X += vector.X;
                 shape[i].Y += vector.Y;
+            }
+        }
+
+        public void Move(PointF thrust)
+        {
+            for (int i = 0; i < shape.Length; i++)
+            {
+                shape[i].X += (vector.X + thrust.X);
+                shape[i].Y += (vector.Y + thrust.Y);
             }
         }
 

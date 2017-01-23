@@ -30,7 +30,7 @@ namespace AstroidsClone
         private void timer1_Tick(object sender, EventArgs e)
         {
             graphics.Clear(Color.Black);
-            manager.Draw();
+            manager.Run();
             
         }
 
@@ -40,7 +40,19 @@ namespace AstroidsClone
             {
                 manager.RotateShip(e);
             }
+            else if(e.KeyCode == Keys.W)
+            {
+                manager.Move();
+            }
             
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A || e.KeyCode == Keys.D)
+            {
+                manager.stopRotation();
+            }
         }
     }
 }
