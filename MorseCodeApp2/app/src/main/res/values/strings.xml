@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MorseCodeApp</string>
+    <string name="title_activity_flashing">Flashing</string>
+    <string name="title_activity_flasher">Flasher</string>
+</resources>

@@ -1,0 +1,9 @@
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\bin\Debug\AstroidsClone.exe.config
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\bin\Debug\AstroidsClone.exe
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\bin\Debug\AstroidsClone.pdb
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\obj\Debug\AstroidsClone.csprojResolveAssemblyReference.cache
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\obj\Debug\AstroidsClone.Form1.resources
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\obj\Debug\AstroidsClone.Properties.Resources.resources
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\obj\Debug\AstroidsClone.csproj.GenerateResource.Cache
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\obj\Debug\AstroidsClone.exe
+E:\Git\RandomProjects\AstroidsClone\AstroidsClone\obj\Debug\AstroidsClone.pdb

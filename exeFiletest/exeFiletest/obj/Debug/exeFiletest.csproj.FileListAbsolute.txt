@@ -1,0 +1,9 @@
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\bin\Debug\exeFiletest.exe.config
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\obj\Debug\exeFiletest.csprojResolveAssemblyReference.cache
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\obj\Debug\exeFiletest.Form1.resources
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\obj\Debug\exeFiletest.Properties.Resources.resources
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\obj\Debug\exeFiletest.csproj.GenerateResource.Cache
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\bin\Debug\exeFiletest.exe
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\bin\Debug\exeFiletest.pdb
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\obj\Debug\exeFiletest.exe
+E:\Git\IN710dewahm1\exeFiletest\exeFiletest\obj\Debug\exeFiletest.pdb
