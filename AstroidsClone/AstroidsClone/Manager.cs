@@ -27,7 +27,7 @@ namespace AstroidsClone
             this.canvasSize = canvasSize;
             ship = new Ship(new PointF(canvasSize.X / 2, canvasSize.Y / 2));
             rnd = new Random();
-            asteroids = new Asteroid[1];
+            asteroids = new Asteroid[50];
             throttlePosition = 0;
 
             createAsteroids();            
