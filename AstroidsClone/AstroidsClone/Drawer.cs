@@ -30,8 +30,9 @@ namespace AstroidsClone
         }
 
         public void drawAsteroid(PointF[] points)
-        {            
-            graphics.DrawPolygon(pen, points);
+        {
+            PointF[] newPoints = createDrawableAsteroid(points);
+            graphics.DrawPolygon(pen, newPoints);
             graphics.DrawRectangle(testPen, points[0].X, points[0].Y, 1, 1);
             drawHitBox(points[0]);
         }
@@ -39,10 +40,10 @@ namespace AstroidsClone
         public PointF[] createDrawableAsteroid(PointF[] points)
         {
             PointF[] newPoints = new PointF[points.Length - 1];
-            for (int i = 1; i < points.Length; i++)
+            for (int i = 0; i < newPoints.Length; i++)
             {
-                newPoints[i] = points[i];
-            }
+                newPoints[i] = points[i + 1];
+            }            
 
             return newPoints;
         }

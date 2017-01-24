@@ -47,10 +47,9 @@ namespace AstroidsClone
         public bool Run()
         {
             ship.rotate();
-            
-            Draw();
             Move();
             collisionDetection();
+            Draw();
 
             if (running == true)
             {
@@ -59,7 +58,9 @@ namespace AstroidsClone
             else
             {                
                 return false;
-            }            
+            }
+
+            
         }           
 
         public void Draw()

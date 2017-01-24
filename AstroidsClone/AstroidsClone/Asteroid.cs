@@ -14,6 +14,7 @@ namespace AstroidsClone
         PointF[] shape;
         int size; //radius of asteroid              
         PointF vector;
+        int astRand; //
 
         public Asteroid(Point startPoint, Random rnd)
         {
@@ -21,6 +22,8 @@ namespace AstroidsClone
             angle = (float)(10 * (Math.PI/180));
             shape = new PointF[36];
             size = 100;
+            astRand = 5;
+
 
             createAsteroid(rnd);
         }
@@ -47,8 +50,8 @@ namespace AstroidsClone
                 float pivotY = shape[0].Y;
 
                 //get a random offset for both x and y
-                rndX = 0;//rnd.Next(-10,10);
-                rndY = 0;//rnd.Next(-10,10);
+                rndX = rnd.Next(-astRand, astRand);
+                rndY = rnd.Next(-astRand, astRand);
 
                 //create new point to be added
                 float newX = (float)(pivotX + ((x - pivotX) * Math.Cos(angle)) - ((y - pivotY) * Math.Sin(angle))) - rndX;
