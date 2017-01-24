@@ -38,7 +38,8 @@ namespace AstroidsClone
             graphics.Clear(Color.Black);
             if(manager.Run() == false)
             {
-                Setup();                
+                //Setup();     
+                timer1.Enabled = false;
             }
             
         }
@@ -52,6 +53,11 @@ namespace AstroidsClone
             if(e.KeyCode == Keys.W)
             {
                 manager.Throtle(1);
+            }
+            if (e.KeyCode == Keys.E)
+            {
+                Setup();
+                timer1.Enabled = true;
             }
             
         }

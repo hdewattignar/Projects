@@ -27,7 +27,7 @@ namespace AstroidsClone
             this.canvasSize = canvasSize;
             ship = new Ship(new PointF(canvasSize.X / 2, canvasSize.Y / 2));
             rnd = new Random();
-            asteroids = new Asteroid[50];
+            asteroids = new Asteroid[1];
             throttlePosition = 0;
 
             createAsteroids();            
@@ -111,15 +111,17 @@ namespace AstroidsClone
 
             for (int i = 0; i < asteroids.Length; i++)
             {                
-                int asteroidX = (int)asteroids[i].CurrentLocation.X;
-                int asteroidY = (int)asteroids[i].CurrentLocation.Y;
+                PointF center = asteroids[i].getCenter();
+                PointF[] all = asteroids[i].getShape();
+                int asteroidX = (int)center.X;
+                int asteroidY = (int)center.Y;
                 int asteroidRad = asteroids[i].Size;
                 PointF[] shipDim = ship.getShipDimensions();
                 int shipX = (int)shipDim[0].X;
                 int shipY = (int)shipDim[0].Y;
 
                 if (((asteroidX + asteroidRad > shipX) && (asteroidX - asteroidRad < shipX)) &&
-                    ((asteroidY + asteroidRad > shipY) && (asteroidY - asteroidRad < shipY)))
+                    ((asteroidY  + asteroidRad > shipY) && (asteroidY - asteroidRad < shipY)))
                 {
                     running = false;
                 }

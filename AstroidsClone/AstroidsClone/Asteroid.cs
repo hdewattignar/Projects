@@ -9,11 +9,10 @@ namespace AstroidsClone
 {
     public class Asteroid
     {
-        PointF currentLocation;        
+        PointF currentLocation;        //middle of the asteroid
         float angle;
         PointF[] shape;
-        int size; //radius of asteroid       
-        
+        int size; //radius of asteroid              
         PointF vector;
 
         public Asteroid(Point startPoint, Random rnd)
@@ -28,14 +27,14 @@ namespace AstroidsClone
 
         public void createAsteroid(Random rnd)
         {
-            int rndX = rnd.Next(10) - 5;
-            int rndY = rnd.Next(10) - 5;
-            vector = new Point(rndX, rndY);   
-
-            //first point of the shape
-            float topX = currentLocation.X;
-            float topY = currentLocation.Y - size;
+            int rndX = rnd.Next(-5,10);
+            int rndY = rnd.Next(-5,10);
+            vector = new Point(rndX, rndY);
             shape[0] = currentLocation;
+
+            //first point of the shape            
+            float topX = shape[0].X;
+            float topY = shape[0].Y + size;            
             shape[1] = new PointF(topX, topY);
 
             for(int i = 2; i < shape.Length; i++)
@@ -44,16 +43,16 @@ namespace AstroidsClone
                 float x = shape[i - 1].X;
                 float y = shape[i - 1].Y;
                 //point to pivot around
-                float pivotX = currentLocation.X;
-                float pivotY = currentLocation.Y;
+                float pivotX = shape[0].X;
+                float pivotY = shape[0].Y;
 
                 //get a random offset for both x and y
-                rndX = rnd.Next(20) - 10;
-                rndY = rnd.Next(20) - 10;
+                rndX = 0;//rnd.Next(-10,10);
+                rndY = 0;//rnd.Next(-10,10);
 
                 //create new point to be added
                 float newX = (float)(pivotX + ((x - pivotX) * Math.Cos(angle)) - ((y - pivotY) * Math.Sin(angle))) - rndX;
-                float newY = (float)(pivotY + ((x - pivotX) * Math.Sin(angle)) + ((y - pivotY) * Math.Cos(angle))) - rndY;
+                float newY = (float)(pivotY + ((x - pivotX) * Math.Sin(angle)) + ((y - pivotY) * Math.Cos(angle))) - rndY;                
 
                 PointF newPoint = new PointF(newX, newY);
                 shape[i] = newPoint;
@@ -67,7 +66,7 @@ namespace AstroidsClone
                 shape[i].X += vector.X;
                 shape[i].Y += vector.Y;
             }
-            currentLocation = shape[0];
+            //CurrentLocation = shape[0];
         }        
 
         public void Move(PointF thrust)
@@ -77,13 +76,17 @@ namespace AstroidsClone
                 shape[i].X += (vector.X + thrust.X);
                 shape[i].Y += (vector.Y + thrust.Y);
             }
-            currentLocation = shape[0];
+            //CurrentLocation = shape[0];
         }        
 
         public PointF[] getShape()
-        {
-            Move();
+        {            
             return shape;
+        }
+
+        public PointF getCenter()
+        {
+            return shape[0];
         }
 
         public PointF CurrentLocation

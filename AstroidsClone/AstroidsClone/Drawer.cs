@@ -11,7 +11,8 @@ namespace AstroidsClone
     {
         Graphics graphics;
         SolidBrush brush;
-        Pen pen;        
+        Pen pen;
+        Pen testPen;
 
         public Drawer(Graphics graphics)
         {
@@ -19,6 +20,8 @@ namespace AstroidsClone
             brush = new SolidBrush(Color.White);
             pen = new Pen(brush);
             pen.Width = 2;
+            testPen = new Pen(new SolidBrush(Color.Red));
+            testPen.Width = 5;
         }
 
         public void drawShip(PointF[] points)
@@ -30,6 +33,13 @@ namespace AstroidsClone
         {
             points[0] = points[1];
             graphics.DrawPolygon(pen, points);
-        }        
+            graphics.DrawRectangle(testPen, points[0].X, points[0].Y, 1, 1);
+            drawHitBox(points[0]);
+        }
+
+        public void drawHitBox(PointF center)
+        {
+            graphics.DrawEllipse(testPen, center.X - 100, center.Y - 100, 200, 200);
+        }
     }
 }
