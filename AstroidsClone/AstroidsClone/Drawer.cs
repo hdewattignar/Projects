@@ -28,7 +28,8 @@ namespace AstroidsClone
 
         public void drawAsteroid(PointF[] points)
         {
-
-        }
+            points[0] = points[1];
+            graphics.DrawPolygon(pen, points);
+        }        
     }
 }

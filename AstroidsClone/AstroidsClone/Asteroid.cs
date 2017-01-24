@@ -9,10 +9,10 @@ namespace AstroidsClone
 {
     public class Asteroid
     {
-        Point currentLocation;
+        PointF currentLocation;        
         float angle;
         PointF[] shape;
-        int size; //radius of asteroid
+        int size; //radius of asteroid       
         
         PointF vector;
 
@@ -35,9 +35,10 @@ namespace AstroidsClone
             //first point of the shape
             float topX = currentLocation.X;
             float topY = currentLocation.Y - size;
-            shape[0] = new PointF(topX, topY);
+            shape[0] = currentLocation;
+            shape[1] = new PointF(topX, topY);
 
-            for(int i = 1; i < shape.Length; i++)
+            for(int i = 2; i < shape.Length; i++)
             {
                 //point that needs to rotate
                 float x = shape[i - 1].X;
@@ -60,13 +61,14 @@ namespace AstroidsClone
         }
 
         public void Move()
-        {
+        {            
             for (int i = 0; i < shape.Length; i++)
             {
                 shape[i].X += vector.X;
                 shape[i].Y += vector.Y;
             }
-        }
+            currentLocation = shape[0];
+        }        
 
         public void Move(PointF thrust)
         {
@@ -75,12 +77,25 @@ namespace AstroidsClone
                 shape[i].X += (vector.X + thrust.X);
                 shape[i].Y += (vector.Y + thrust.Y);
             }
-        }
+            currentLocation = shape[0];
+        }        
 
         public PointF[] getShape()
         {
             Move();
             return shape;
+        }
+
+        public PointF CurrentLocation
+        {
+            get { return currentLocation; }
+            set { currentLocation = value; }
+        }
+
+        public int Size
+        {
+            get { return size; }
+            set { size = value; }
         }
     }
 }

@@ -20,17 +20,26 @@ namespace AstroidsClone
         {
             InitializeComponent();
 
-            BackColor = Color.Black;            
+            Setup();
+        }
+
+        public void Setup()
+        {
+            BackColor = Color.Black;
             graphics = this.CreateGraphics();
             PointF canvasSize = new PointF(this.Width, this.Height);
             manager = new Manager(graphics, canvasSize);
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            manager.Running = true;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             graphics.Clear(Color.Black);
-            manager.Run();
+            if(manager.Run() == false)
+            {
+                Setup();                
+            }
             
         }
 
@@ -40,9 +49,9 @@ namespace AstroidsClone
             {
                 manager.RotateShip(e);
             }
-            else if(e.KeyCode == Keys.W)
+            if(e.KeyCode == Keys.W)
             {
-                manager.Move();
+                manager.Throtle(1);
             }
             
         }
@@ -52,6 +61,10 @@ namespace AstroidsClone
             if (e.KeyCode == Keys.A || e.KeyCode == Keys.D)
             {
                 manager.stopRotation();
+            }
+            if (e.KeyCode == Keys.W)
+            {
+                manager.Throtle(0);
             }
         }
     }

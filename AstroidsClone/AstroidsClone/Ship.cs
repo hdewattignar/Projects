@@ -13,6 +13,8 @@ namespace AstroidsClone
         PointF[] currentLocation;
         float rotationAngle;
         float heading;
+        int topSpeed;
+        int speed;
         PointF velocity;
 
         public Ship(PointF startPoint)
@@ -23,6 +25,9 @@ namespace AstroidsClone
 
             currentLocation = new PointF[4];
             currentLocation[0] = startPoint;
+
+            topSpeed = 100;
+            speed = 0;
 
             float brX = startPoint.X + 30;
             float brY = startPoint.Y + 50;
@@ -44,14 +49,26 @@ namespace AstroidsClone
         public PointF Thrust()
         {
             float headingRad = (float)((Math.PI * heading) / 180);
-            velocity.X = (float)Math.Cos(heading) * 10;
-            velocity.Y = (float)Math.Sin(heading) * 10;
+            velocity.X = (float)Math.Cos(heading) * speed;
+            velocity.Y = (float)Math.Sin(heading) * speed;
 
             //invert the velocity so it can be applies the the asteroids
             velocity.X = velocity.X - (velocity.X * 2);
             velocity.Y = velocity.Y - (velocity.Y * 2);
 
             return velocity;            
+        }
+
+        public void AdjustSpeed(int acceleration)
+        {
+            if(speed > 0 && acceleration == 0)
+            {
+                speed--;
+            }
+            else if(acceleration != 0 && speed < topSpeed)
+            {
+                speed++;
+            }
         }
 
         /// <summary>
@@ -77,7 +94,9 @@ namespace AstroidsClone
                     currentLocation[i].X = (float)(startX + ((x - startX) * Math.Cos(rotationAngle)) - ((y - startY) * Math.Sin(rotationAngle)));
                     currentLocation[i].Y = (float)(startY + ((x - startX) * Math.Sin(rotationAngle)) + ((y - startY) * Math.Cos(rotationAngle)));
                 }
-            }            
+            }
+
+            Heading += RotationAngle;
         }
 
         public void rotateRight()
