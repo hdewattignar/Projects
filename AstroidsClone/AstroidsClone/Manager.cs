@@ -11,37 +11,58 @@ namespace AstroidsClone
     public class Manager
     {
         Graphics graphics;
-        Ship ship;
-        Asteroid[] asteroids;
         Drawer drawer;
-        PointF canvasSize;
         Random rnd;
-        bool running;
+
+        Ship ship;
         int throttlePosition; // accelerating or decelerating
+
+        List<Asteroid> asteroids;
+        int asteroidCount = 100;        
+        
+        PointF canvasSize;
+        PointF bounds;
+
+        
+        bool running;
+        
 
         public Manager(Graphics graphics, PointF canvasSize)
         {
             running = true;
+
             this.graphics = graphics;
             drawer = new Drawer(graphics);
-            this.canvasSize = canvasSize;
-            ship = new Ship(new PointF(canvasSize.X / 2, canvasSize.Y / 2));
             rnd = new Random();
-            asteroids = new Asteroid[50];
-            throttlePosition = 0;
+
+            this.canvasSize = canvasSize;
+            bounds = new PointF(canvasSize.X * 2, canvasSize.Y * 2);
+
+            ship = new Ship(new PointF(canvasSize.X / 2, canvasSize.Y / 2));
+            throttlePosition = 0;            
+            
+            asteroids = new List<Asteroid>();            
 
             createAsteroids();            
         }
 
         public void createAsteroids()
         {
-            for (int i = 0; i < asteroids.Length; i++)
+            for (int i = 0; i < asteroidCount; i++)
             {
-                int newX = rnd.Next((int)canvasSize.X *3);
-                int newY = rnd.Next((int)canvasSize.Y *3);
+                int newX = rnd.Next((int)bounds.X);
+                int newY = rnd.Next((int)bounds.Y);
                 Point newPoint = new Point(newX, newY);
-                asteroids[i] = new Asteroid(newPoint, rnd);
+                asteroids.Add(new Asteroid(newPoint, rnd));
             }
+        }
+
+        public void createSingleAsteroid()
+        {
+            int newX = rnd.Next((int)bounds.X);
+            int newY = rnd.Next((int)bounds.Y);
+            Point newPoint = new Point(newX, newY);
+            asteroids.Add(new Asteroid(newPoint, rnd));
         }
 
         public bool Run()
@@ -67,10 +88,16 @@ namespace AstroidsClone
         {
             drawer.drawShip(ship.getShipDimensions());
 
-            for (int i = 0; i < asteroids.Length; i++)
+            for (int i = 0; i < asteroids.Count; i++)
             {
-                drawer.drawAsteroid(asteroids[i].getShape());
-            }            
+                boundsDetection();
+                drawer.drawAsteroid(asteroids.ElementAt(i).getShape());
+            }          
+  
+            if(asteroids.Count < asteroidCount)
+            {
+                createSingleAsteroid();
+            }
         }        
 
         public void Move()
@@ -78,9 +105,9 @@ namespace AstroidsClone
             ship.AdjustSpeed(throttlePosition);
             PointF velocity = ship.Thrust();
 
-            for (int i = 0; i < asteroids.Length; i++)
+            for (int i = 0; i < asteroids.Count; i++)
             {
-                asteroids[i].Move(velocity);
+                asteroids.ElementAt(i).Move(velocity);
             }
         }
 
@@ -110,13 +137,13 @@ namespace AstroidsClone
         {
             PointF[] shipBounds = ship.getShipDimensions();
 
-            for (int i = 0; i < asteroids.Length; i++)
-            {                
-                PointF center = asteroids[i].getCenter();
-                PointF[] all = asteroids[i].getShape();
+            for (int i = 0; i < asteroids.Count; i++)
+            {
+                PointF center = asteroids.ElementAt(i).getCenter();
+                PointF[] all = asteroids.ElementAt(i).getShape();
                 int asteroidX = (int)center.X;
                 int asteroidY = (int)center.Y;
-                int asteroidRad = asteroids[i].Size;
+                int asteroidRad = asteroids.ElementAt(i).Size;
                 PointF[] shipDim = ship.getShipDimensions();
                 int shipX = (int)shipDim[0].X;
                 int shipY = (int)shipDim[0].Y;
@@ -125,6 +152,30 @@ namespace AstroidsClone
                     ((asteroidY  + asteroidRad > shipY) && (asteroidY - asteroidRad < shipY)))
                 {
                     running = false;
+                }
+            }
+        }
+
+        public void boundsDetection()
+        {
+            //ship location
+            Point currentShipLocation = ship.getShortLocation();
+            int x1 = currentShipLocation.X;
+            int y1 = currentShipLocation.Y;
+            int d = 5000;
+
+            //iterate through asteroids backwards
+            for (int i = asteroids.Count - 1; i > 0; i--)
+            {                
+                int x2 = (int)asteroids.ElementAt(i).CurrentLocation.X; 
+                int y2 = (int)asteroids.ElementAt(i).CurrentLocation.Y;
+
+
+                int distance = ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+
+                if(distance > d)
+                {
+                    asteroids.RemoveAt(i);
                 }
             }
         }

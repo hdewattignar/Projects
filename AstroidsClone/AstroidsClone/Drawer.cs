@@ -34,7 +34,7 @@ namespace AstroidsClone
             PointF[] newPoints = createDrawableAsteroid(points);
             graphics.DrawPolygon(pen, newPoints);
             graphics.DrawRectangle(testPen, points[0].X, points[0].Y, 1, 1);
-            drawHitBox(points[0]);
+            //drawHitBox(points[0]);
         }
 
         public PointF[] createDrawableAsteroid(PointF[] points)

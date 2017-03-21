@@ -128,6 +128,18 @@ namespace AstroidsClone
             }
         }
 
+        public Point getShortLocation()
+        {
+            Point shortLoc;
+
+            int x = (int)currentLocation[0].X;
+            int y = (int)currentLocation[0].Y;
+
+            shortLoc = new Point(x, y);
+
+            return shortLoc;
+        }
+
         public float RotationAngle
         {
             get { return rotationAngle; }
