@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\FollowPlayer.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\ObstacleMovement.cs" />
      <Compile Include="Assets\Scripts\PLayerMovement.cs" />
      <Compile Include="Assets\Scripts\PlayerCollision.cs" />
      <Compile Include="Assets\Scripts\Score.cs" />
