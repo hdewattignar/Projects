@@ -15,31 +15,26 @@ namespace AstroidsClone
         Random rnd;
 
         Ship ship;
-        int throttlePosition; // accelerating or decelerating
+        int throttlePosition = 0; // accelerating or decelerating
 
         List<Asteroid> asteroids;
-        int asteroidCount = 100;        
+        int asteroidCount = 200;        
         
         PointF canvasSize;
         PointF bounds;
 
-        
-        bool running;
+        bool running = true;
         
 
         public Manager(Graphics graphics, PointF canvasSize)
         {
-            running = true;
-
             this.graphics = graphics;
             drawer = new Drawer(graphics);
             rnd = new Random();
 
             this.canvasSize = canvasSize;
-            bounds = new PointF(canvasSize.X * 2, canvasSize.Y * 2);
-
-            ship = new Ship(new PointF(canvasSize.X / 2, canvasSize.Y / 2));
-            throttlePosition = 0;            
+            bounds = new PointF(canvasSize.X * 5, canvasSize.Y * 5);
+            ship = new Ship(new PointF(canvasSize.X / 2, canvasSize.Y / 2));                     
             
             asteroids = new List<Asteroid>();            
 
@@ -76,12 +71,8 @@ namespace AstroidsClone
             {
                 return true;
             }
-            else
-            {                
-                return false;
-            }
-
-            
+                        
+            return false;            
         }           
 
         public void Draw()
@@ -90,8 +81,10 @@ namespace AstroidsClone
 
             for (int i = 0; i < asteroids.Count; i++)
             {
-                boundsDetection();
-                drawer.drawAsteroid(asteroids.ElementAt(i).getShape());
+                if (boundsDetection(i))
+                {
+                    drawer.drawAsteroid(asteroids.ElementAt(i).getShape());
+                }                
             }          
   
             if(asteroids.Count < asteroidCount)
@@ -111,7 +104,7 @@ namespace AstroidsClone
             }
         }
 
-        public void Throtle(int accdec)
+        public void Throttle(int accdec)
         {
             throttlePosition = accdec;
         }
@@ -156,28 +149,27 @@ namespace AstroidsClone
             }
         }
 
-        public void boundsDetection()
+        //decides if an asteroid should be draw
+        //this should lower draw time
+        public bool boundsDetection(int currentAsteroidIndex)
         {
             //ship location
             Point currentShipLocation = ship.getShortLocation();
             int x1 = currentShipLocation.X;
             int y1 = currentShipLocation.Y;
-            int d = 5000;
+            int d = 3000;
 
-            //iterate through asteroids backwards
-            for (int i = asteroids.Count - 1; i > 0; i--)
-            {                
-                int x2 = (int)asteroids.ElementAt(i).CurrentLocation.X; 
-                int y2 = (int)asteroids.ElementAt(i).CurrentLocation.Y;
+            int x2 = (int)asteroids.ElementAt(currentAsteroidIndex).CurrentLocation.X;
+            int y2 = (int)asteroids.ElementAt(currentAsteroidIndex).CurrentLocation.Y;
 
+            double distance = Math.Sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));            
 
-                int distance = ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-
-                if(distance > d)
-                {
-                    asteroids.RemoveAt(i);
-                }
+            if (distance < d)
+            {
+                return true;
             }
+
+            return false;
         }
 
         public bool Running
