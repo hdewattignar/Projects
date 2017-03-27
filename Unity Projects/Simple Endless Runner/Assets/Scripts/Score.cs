@@ -7,6 +7,8 @@ public class Score : MonoBehaviour {
     public Transform player;
     public Text score;
 
+    bool keepScore = true;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -15,8 +17,18 @@ public class Score : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        //player.position.z;
-        score.text = player.position.z.ToString("0");
+        if(keepScore)
+            score.text = player.position.z.ToString("0");
 
 	}
+
+    public void StopScore()
+    {
+        keepScore = false;
+    }
+
+    public void StartScore()
+    {
+        keepScore = true;
+    }
 }

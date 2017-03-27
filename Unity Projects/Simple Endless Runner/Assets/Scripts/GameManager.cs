@@ -4,14 +4,15 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-    bool gameRunning = true;
-
+    public bool gameRunning = true;
     public float restartDelay = 1f;
-
-    public GameObject completeLevelUI;
+    public GameObject completeLevelUI;    
+    
     public void CompleteLevel()
     {
         completeLevelUI.SetActive(true);
+        FindObjectOfType<FollowPlayer>().StopFollow();
+        FindObjectOfType<Score>().StopScore();
     }
 
     public void GameOver()
