@@ -5,12 +5,7 @@ public class ObstacleMovement : MonoBehaviour {
 
     public Rigidbody rb;
     public float sidewaysForce;
-
-    void Start()
-    {
-
-        //Debug.Log("Hello World");        
-    }
+   
 
 	// Update is called once per frame
 	void FixedUpdate() {
