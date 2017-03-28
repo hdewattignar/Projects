@@ -10,18 +10,19 @@ public class ObstacleMovement : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate() {
 
-        rb.AddForce(sidewaysForce * Time.deltaTime, 0, 0);
+        //rb.AddForce(sidewaysForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
 
-        if (rb.position.x > 4 && sidewaysForce > 0)
-        {
-            rb.AddForce(0, 0, 0, ForceMode.Impulse);
-            sidewaysForce = -sidewaysForce;
+        //if (rb.position.x > 4 && sidewaysForce > 0)
+        //{
+        //    //rb.AddForce(0, 0, 0, ForceMode.VelocityChange);
             
-        }
-        else if (rb.position.x < -4 && sidewaysForce < 0)
-        {
-            rb.AddForce(0, 0, 0, ForceMode.Impulse);
-            sidewaysForce = -sidewaysForce;
-        }        
+        //    sidewaysForce = -sidewaysForce;
+            
+        //}
+        //else if (rb.position.x < -4 && sidewaysForce < 0)
+        //{
+        //    //rb.AddForce(0, 0, 0, ForceMode.VelocityChange);
+        //    sidewaysForce = -sidewaysForce;
+        //}        
 	}
 }
