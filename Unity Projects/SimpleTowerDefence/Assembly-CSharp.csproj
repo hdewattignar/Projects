@@ -45,9 +45,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Enemy.cs" />
-     <Compile Include="Assets\WaveSpawner.cs" />
-     <Compile Include="Assets\Waypoints.cs" />
+     <Compile Include="Assets\Scipts\Bullet.cs" />
+     <Compile Include="Assets\Scipts\Enemy.cs" />
+     <Compile Include="Assets\Scipts\Turret.cs" />
+     <Compile Include="Assets\Scipts\WaveSpawner.cs" />
+     <Compile Include="Assets\Scipts\Waypoints.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
