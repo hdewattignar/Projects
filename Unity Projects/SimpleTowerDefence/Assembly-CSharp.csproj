@@ -45,6 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BuildManager.cs" />
+     <Compile Include="Assets\Node.cs" />
      <Compile Include="Assets\Scipts\Bullet.cs" />
      <Compile Include="Assets\Scipts\Enemy.cs" />
      <Compile Include="Assets\Scipts\Turret.cs" />
