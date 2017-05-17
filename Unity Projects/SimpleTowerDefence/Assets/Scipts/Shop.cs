@@ -17,7 +17,7 @@ public class Shop : MonoBehaviour {
 
     public void PurchaseMissileTurret()
     {
-        buildManager.SetTurretToBuiild(buildManager.standardTurretPreFab);
+        buildManager.SetTurretToBuiild(buildManager.missileTurretPreFab);
     }
 
     public void PurchaseLaserTurret()
