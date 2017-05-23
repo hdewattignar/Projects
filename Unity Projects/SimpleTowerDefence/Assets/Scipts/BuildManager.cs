@@ -7,6 +7,8 @@ public class BuildManager : MonoBehaviour {
     private TurretBluePrint turretToBuild;
     public GameObject standardTurretPreFab;
     public GameObject missileTurretPreFab;
+    public GameObject buildEffect;
+
     void Awake()
     {
         if(instance != null)
@@ -18,6 +20,8 @@ public class BuildManager : MonoBehaviour {
     }
 
     public bool CanBuild {  get {return turretToBuild != null; } }
+
+    public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.cost; } }
     
     public void SelectTurretToBuiild(TurretBluePrint turret)
     {
@@ -33,6 +37,9 @@ public class BuildManager : MonoBehaviour {
         }
 
         PlayerStats.Money -= turretToBuild.cost;
+
+        GameObject effect = (GameObject)Instantiate(buildEffect, node.GetBuildPosition(), Quaternion.identity);
+        Destroy(effect, 5f);
 
         GameObject turret = (GameObject)Instantiate(turretToBuild.preFab, node.GetBuildPosition(), Quaternion.identity);
         node.turret = turret;

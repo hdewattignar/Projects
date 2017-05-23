@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\MoneyUI.cs" />
      <Compile Include="Assets\PlayerStats.cs" />
      <Compile Include="Assets\Scipts\BuildManager.cs" />
      <Compile Include="Assets\Scipts\Bullet.cs" />
@@ -57,6 +58,7 @@
      <Compile Include="Assets\Scipts\TurretBluePrint.cs" />
      <Compile Include="Assets\Scipts\WaveSpawner.cs" />
      <Compile Include="Assets\Scipts\Waypoints.cs" />
+     <None Include="Assets\Fonts\LICENSE.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
