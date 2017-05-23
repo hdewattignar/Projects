@@ -19,3 +19,13 @@ E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.Net
 E:\Git\Projects\Unity Projects\SimpleTowerDefence\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 E:\Git\Projects\Unity Projects\SimpleTowerDefence\obj\Debug\Assembly-CSharp.dll
 E:\Git\Projects\Unity Projects\SimpleTowerDefence\obj\Debug\Assembly-CSharp.pdb
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\nunit.framework.dll
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.Analytics.dll
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.HoloLens.dll
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.TestRunner.dll
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.VR.dll
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.TestRunner.xml
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\nunit.framework.xml
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.Analytics.xml
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.HoloLens.xml
+E:\Git\Projects\Unity Projects\SimpleTowerDefence\Temp\bin\Debug\UnityEngine.VR.xml

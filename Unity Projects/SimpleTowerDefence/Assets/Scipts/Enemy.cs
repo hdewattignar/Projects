@@ -3,6 +3,9 @@
 public class Enemy : MonoBehaviour {
 
     public float speed;
+    public int health = 100;
+
+    public int value = 50;
 
     private Transform target;
     private int wayPointIndex = 0;
@@ -28,12 +31,38 @@ public class Enemy : MonoBehaviour {
     {
         if (wayPointIndex >= Waypoints.points.Length - 1)
         {
-            Destroy(gameObject);
+            PathEnded();
             return;
         }
             
 
         wayPointIndex++;
         target = Waypoints.points[wayPointIndex];
+    }
+
+    void PathEnded()
+    {
+        PlayerStats.Lives--;
+        Destroy(gameObject);
+    }
+
+    public void TakeDamage(int dmg)
+    {
+        health -= dmg;
+
+        if (health <= 0f)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
+
+        //create effect
+
+        //add money
+        PlayerStats.Money += value;
     }
 }

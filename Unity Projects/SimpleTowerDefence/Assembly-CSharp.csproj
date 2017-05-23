@@ -46,13 +46,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\MoneyUI.cs" />
-     <Compile Include="Assets\PlayerStats.cs" />
      <Compile Include="Assets\Scipts\BuildManager.cs" />
      <Compile Include="Assets\Scipts\Bullet.cs" />
      <Compile Include="Assets\Scipts\CameraController.cs" />
      <Compile Include="Assets\Scipts\Enemy.cs" />
+     <Compile Include="Assets\Scipts\GameManager.cs" />
+     <Compile Include="Assets\Scipts\LivesUI.cs" />
+     <Compile Include="Assets\Scipts\MoneyUI.cs" />
      <Compile Include="Assets\Scipts\Node.cs" />
+     <Compile Include="Assets\Scipts\PlayerStats.cs" />
      <Compile Include="Assets\Scipts\Shop.cs" />
      <Compile Include="Assets\Scipts\Turret.cs" />
      <Compile Include="Assets\Scipts\TurretBluePrint.cs" />
