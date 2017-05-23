@@ -4,7 +4,7 @@ using System.Collections;
 public class BuildManager : MonoBehaviour {
 
     public static BuildManager instance;
-    private GameObject turretToBuild;
+    private TurretBluePrint turretToBuild;
     public GameObject standardTurretPreFab;
     public GameObject missileTurretPreFab;
     void Awake()
@@ -17,15 +17,27 @@ public class BuildManager : MonoBehaviour {
         instance = this;
     }
 
+    public bool CanBuild {  get {return turretToBuild != null; } }
     
-
-    public GameObject GetTurretToBuild()
-    {
-        return turretToBuild;
-    }
-
-    public void SetTurretToBuiild(GameObject turret)
+    public void SelectTurretToBuiild(TurretBluePrint turret)
     {
         turretToBuild = turret;
     }
+
+    public void BuildTurretOn(Node node)
+    {
+        if (PlayerStats.Money < turretToBuild.cost)
+        {
+            Debug.Log("No Money Bro");
+            return;
+        }
+
+        PlayerStats.Money -= turretToBuild.cost;
+
+        GameObject turret = (GameObject)Instantiate(turretToBuild.preFab, node.GetBuildPosition(), Quaternion.identity);
+        node.turret = turret;
+
+        Debug.Log("Money left = " + PlayerStats.Money);
+    }
+        
 }
