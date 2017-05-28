@@ -41,6 +41,7 @@ public class WaveSpawner : MonoBehaviour {
         }
 
         waveNum++;
+        PlayerStats.Waves++;
 
         if (waveNum % 5 == 0)
         {

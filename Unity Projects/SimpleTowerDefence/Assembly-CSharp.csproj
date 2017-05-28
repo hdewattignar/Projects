@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scipts\Enemy.cs" />
      <Compile Include="Assets\Scipts\EnemyMovement.cs" />
      <Compile Include="Assets\Scipts\GameManager.cs" />
+     <Compile Include="Assets\Scipts\GameOverLogic.cs" />
      <Compile Include="Assets\Scipts\LivesUI.cs" />
      <Compile Include="Assets\Scipts\MoneyUI.cs" />
      <Compile Include="Assets\Scipts\Node.cs" />
