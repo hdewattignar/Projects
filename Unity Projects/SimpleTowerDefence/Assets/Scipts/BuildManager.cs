@@ -4,9 +4,7 @@ using System.Collections;
 public class BuildManager : MonoBehaviour {
 
     public static BuildManager instance;
-    private TurretBluePrint turretToBuild;
-    public GameObject standardTurretPreFab;
-    public GameObject missileTurretPreFab;
+    private TurretBluePrint turretToBuild;    
     public GameObject buildEffect;
 
     void Awake()

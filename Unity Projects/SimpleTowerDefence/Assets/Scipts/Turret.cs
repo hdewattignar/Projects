@@ -3,18 +3,26 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 
-    [Header("Attributes")]
+    [Header("General")]
+    
+    public float range = 2.5f;   
+
+    [Header("Use Bullets")]
 
     public float turnSpeed = 10;
-    public float range = 2.5f;
     public float fireRate = 1;
     private float fireCountdown = 0f;
+    public GameObject bulletPreFab;
+
+    [Header("Use Laser")]
+    public bool useLaser = false;
+    public LineRenderer lineRenderer;
 
     [Header("Setup")]
+
     private Transform target;    
     public string enemyTag = "Enemy";    
-    public Transform partToRotate;
-    public GameObject bulletPreFab;
+    public Transform partToRotate;    
     public Transform firePoint;
 
 	// Use this for initialization
@@ -55,22 +63,57 @@ public class Turret : MonoBehaviour {
 	void Update () {
 
         if (target == null)
+        {
+            if (useLaser)
+            {
+                if(lineRenderer.enabled)
+                {
+                    lineRenderer.enabled = false;
+                }
+            }
             return;
+        }
+            
 
+        LockOnTarget();
+
+        if (useLaser)
+        {
+            Laser();
+        }
+        else
+        {
+            if (fireCountdown <= 0)
+            {
+                Shoot();
+                fireCountdown = 1f / fireRate;
+            }
+
+            fireCountdown -= Time.deltaTime;
+        }
+       
+	}
+
+    void Laser()
+    {
+        if (!lineRenderer.enabled)
+        {
+            lineRenderer.enabled = true;
+        }
+
+        lineRenderer.SetPosition(0, firePoint.position);
+        lineRenderer.SetPosition(1, target.position);
+
+    }
+
+    void LockOnTarget()
+    {
         //controls the rotation of the turret so that it always point towards it target 
         Vector3 dir = target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = (Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles);
         partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-
-        if (fireCountdown <= 0)
-        {
-            Shoot();
-            fireCountdown = 1f / fireRate;
-        }
-
-        fireCountdown -= Time.deltaTime;
-	}
+    }
 
     void Shoot()
     {
