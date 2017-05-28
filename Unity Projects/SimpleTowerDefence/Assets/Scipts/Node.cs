@@ -22,19 +22,22 @@ public class Node : MonoBehaviour {
 
     void OnMouseDown()
     {
+        //dont do anything if the cursor is over a UI button
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
-        }
+        }        
 
-        if (!buildManager.CanBuild)
-            return;
-
+        //if players selects a node that has a turret on it, bring up the UI. 
         if(turret != null)
         {
-            Debug.Log("Cant do dat");
+            buildManager.SelectNode(this);
             return;
         }
+
+        //if player has no money
+        if (!buildManager.CanBuild)
+            return;
 
         //build a turret
         buildManager.BuildTurretOn(this);

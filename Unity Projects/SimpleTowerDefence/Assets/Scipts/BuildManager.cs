@@ -6,6 +6,9 @@ public class BuildManager : MonoBehaviour {
     public static BuildManager instance;
     private TurretBluePrint turretToBuild;    
     public GameObject buildEffect;
+    private Node selectedNode;
+
+    public NodeUI nodeUI;
 
     void Awake()
     {
@@ -24,6 +27,27 @@ public class BuildManager : MonoBehaviour {
     public void SelectTurretToBuiild(TurretBluePrint turret)
     {
         turretToBuild = turret;
+        DeselectNode();
+    }
+
+    public void SelectNode(Node node)
+    {
+        if (selectedNode == node)
+        {
+            DeselectNode();
+            return;
+        }
+
+        selectedNode = node;
+        turretToBuild = null;
+
+        nodeUI.setTarget(node);
+    }
+
+    public void DeselectNode()
+    {
+        selectedNode = null;
+        nodeUI.Hide();
     }
 
     public void BuildTurretOn(Node node)
