@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 
+    private Transform target;
+    private Enemy targetEnemy;
+
     [Header("General")]
     
     public float range = 2.5f;   
@@ -15,12 +18,14 @@ public class Turret : MonoBehaviour {
     public GameObject bulletPreFab;
 
     [Header("Use Laser")]
+    public int damageOverTime = 30;
     public bool useLaser = false;
     public LineRenderer lineRenderer;
+    public float slowPercentage = 0.5f;
 
     [Header("Setup")]
 
-    private Transform target;    
+       
     public string enemyTag = "Enemy";    
     public Transform partToRotate;    
     public Transform firePoint;
@@ -52,6 +57,7 @@ public class Turret : MonoBehaviour {
         if(nearestEnemy != null && shortestDistance <= range)
         {
             target = nearestEnemy.transform;
+            targetEnemy = nearestEnemy.GetComponent<Enemy>();
         }
         else
         {
@@ -96,6 +102,9 @@ public class Turret : MonoBehaviour {
 
     void Laser()
     {
+        targetEnemy.TakeDamage(damageOverTime * Time.deltaTime);
+        targetEnemy.Slow(slowPercentage);
+
         if (!lineRenderer.enabled)
         {
             lineRenderer.enabled = true;

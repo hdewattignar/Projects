@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scipts\Bullet.cs" />
      <Compile Include="Assets\Scipts\CameraController.cs" />
      <Compile Include="Assets\Scipts\Enemy.cs" />
+     <Compile Include="Assets\Scipts\EnemyMovement.cs" />
      <Compile Include="Assets\Scipts\GameManager.cs" />
      <Compile Include="Assets\Scipts\LivesUI.cs" />
      <Compile Include="Assets\Scipts\MoneyUI.cs" />
