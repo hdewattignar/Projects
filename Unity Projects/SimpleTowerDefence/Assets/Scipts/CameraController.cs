@@ -2,8 +2,7 @@
 
 
 public class CameraController : MonoBehaviour {
-
-    private bool doMove = true;
+        
     public float panSpeed = 10f;
     public float offSet = 40f;
     public float scrollSpeed = 5f;
@@ -16,18 +15,7 @@ public class CameraController : MonoBehaviour {
         if (!GameManager.GameRunning)
         {
             this.enabled = false;
-        }
-
-        //toggle movement
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            doMove = !doMove;
-        }
-
-        if (!doMove)
-        {
-            return;
-        }
+        }        
 
         //X,Y movement
         if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - offSet)
