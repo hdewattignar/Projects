@@ -6,8 +6,15 @@ public class Node : MonoBehaviour {
 
     public Color hoverColour;
     public Color notEnoughMoneyColour;
-    public GameObject turret;
     public Vector3 posOffset;
+
+    [HideInInspector]
+    public GameObject turret;
+    [HideInInspector]
+    public TurretBluePrint turretBluePrint;
+    [HideInInspector]
+    public bool isUpgraded = false;
+
     private Renderer rend;
     private Color startColour;
 
@@ -39,8 +46,51 @@ public class Node : MonoBehaviour {
         if (!buildManager.CanBuild)
             return;
 
-        //build a turret
-        buildManager.BuildTurretOn(this);
+        BuildTurret(buildManager.GetTurretToBuild());
+
+       
+    }
+
+    void BuildTurret(TurretBluePrint bluePrint)
+    {
+        if (PlayerStats.Money < bluePrint.cost)
+        {
+            Debug.Log("No Money Bro");
+            return;
+        }        
+
+        PlayerStats.Money -= bluePrint.cost;
+
+        GameObject _turret = (GameObject)Instantiate(bluePrint.preFab, GetBuildPosition(), Quaternion.identity);
+        turret = _turret;
+
+        turretBluePrint = bluePrint;
+
+        GameObject effect = (GameObject)Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
+        Destroy(effect, 5f);
+    }
+
+    public void UpgradeTurret()
+    {
+        //make sure player has enough money
+        if (PlayerStats.Money < turretBluePrint.upgradeCost)
+        {
+            Debug.Log("No Enough Money to Upgrade");
+            return;
+        }
+
+        //subtract money from player
+        PlayerStats.Money -= turretBluePrint.upgradeCost;
+
+        //destroy current turret
+        Destroy(turret);
+
+        //build the new turret and set isUpgraded to true
+        GameObject effect = (GameObject)Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
+        Destroy(effect, 5f);        
+        isUpgraded = true;
+        GameObject _turret = (GameObject)Instantiate(turretBluePrint.upgradedPreFab, GetBuildPosition(), Quaternion.identity);
+        turret = _turret;   
     }
 
     void OnMouseEnter()
