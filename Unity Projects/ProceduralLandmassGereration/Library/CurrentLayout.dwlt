@@ -658,9 +658,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -86.60553, y: 181.55637, z: -40.48419}
+    m_Target: {x: -6.880948, y: 181.55688, z: 90.39145}
     speed: 2
-    m_Value: {x: -86.60553, y: 181.55637, z: -40.48419}
+    m_Value: {x: -6.880948, y: 181.55688, z: 90.39145}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -687,9 +687,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -0.7071068, y: 0, z: -0, w: -0.7071068}
   m_Size:
-    m_Target: 2497.9243
+    m_Target: 3801.0571
     speed: 2
-    m_Value: 2497.9243
+    m_Value: 3801.0571
   m_Ortho:
     m_Target: 0
     speed: 2
