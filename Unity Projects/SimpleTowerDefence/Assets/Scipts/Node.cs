@@ -93,6 +93,14 @@ public class Node : MonoBehaviour {
         turret = _turret;   
     }
 
+    public void SellTurret()
+    {
+        PlayerStats.Money += turretBluePrint.GetSellAmount();
+
+        Destroy(turret);
+        turretBluePrint = null;
+    }
+
     void OnMouseEnter()
     {
         if (EventSystem.current.IsPointerOverGameObject())
