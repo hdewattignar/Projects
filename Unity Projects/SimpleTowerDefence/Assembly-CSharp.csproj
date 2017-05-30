@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scipts\NodeUI.cs" />
      <Compile Include="Assets\Scipts\PauseMenu.cs" />
      <Compile Include="Assets\Scipts\PlayerStats.cs" />
+     <Compile Include="Assets\Scipts\SceneFader.cs" />
      <Compile Include="Assets\Scipts\Shop.cs" />
      <Compile Include="Assets\Scipts\Turret.cs" />
      <Compile Include="Assets\Scipts\TurretBluePrint.cs" />

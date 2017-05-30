@@ -18,8 +18,8 @@ public class Turret : MonoBehaviour {
     public GameObject bulletPreFab;
 
     [Header("Use Laser")]
-    public int damageOverTime = 30;
     public bool useLaser = false;
+    public int damageOverTime = 30;    
     public LineRenderer lineRenderer;
     public float slowPercentage = 0.5f;
 
