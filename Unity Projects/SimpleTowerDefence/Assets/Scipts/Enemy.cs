@@ -45,6 +45,9 @@ public class Enemy : MonoBehaviour {
 
         //create effect
 
+        //update wave spawner
+        WaveSpawner.EnemysAlive--;
+
         //add money
         PlayerStats.Money += value;
     }
