@@ -13,12 +13,13 @@ public class NodeUI : MonoBehaviour {
 
     public Text sellCost;
     public Button sellButton;
+    public Vector3 offsetY;
 
     public void SetTarget(Node _target)
     {
         target = _target;
 
-        transform.position = target.GetBuildPosition();        
+        transform.position = target.GetBuildPosition() + offsetY;        
 
         if(!target.isUpgraded)
         {
