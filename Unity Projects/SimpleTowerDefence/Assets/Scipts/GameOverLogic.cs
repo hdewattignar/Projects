@@ -5,15 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameOverLogic : MonoBehaviour {
-
-	public Text roundstext;
+    	
     public SceneFader sceneFader;
-    public string menuSceneName = "MainMenu";
-
-    void OnEnable()
-    {
-        roundstext.text = PlayerStats.Waves.ToString();
-    }
+    public string menuSceneName = "MainMenu";    
 
     public void Retry()
     {
