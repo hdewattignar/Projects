@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletLogic : MonoBehaviour {
 
     public float bulletSpeed = 1;
-    public float damage = 50;
+    public int damage = 50;
     public float lifeSpan = 5;
 
     void Start()
@@ -28,4 +28,9 @@ public class BulletLogic : MonoBehaviour {
         }
 
 	}
+
+    public int GetDamage()
+    {
+        return damage;
+    }
 }

@@ -1,7 +1,7 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{245A7212-043C-656A-7CB6-054C66714F96}") = "Simple Endless Runner", "Assembly-CSharp.csproj", "{C9A98BD1-B3E8-7730-22F3-B0ABBB3A07D4}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple Endless Runner", "Assembly-CSharp.csproj", "{C9A98BD1-B3E8-7730-22F3-B0ABBB3A07D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
