@@ -9,14 +9,19 @@ public class InputManager : MonoBehaviour {
     public Transform partToRotate;
     public Transform firePoint;
     public GameObject bulletPreFab;
-
+    
     public float bulletCoolDown = 1;
     public float turnSpeed = 10f;
     public float moveSpeed = 10f;
 
     int stickOffset = 15; //adds more distance to the stick values for better
+    Component playerManager;
 
-		
+    void Start()
+    {
+        playerManager = GetComponentInParent<PlayerManager>();
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -45,9 +50,7 @@ public class InputManager : MonoBehaviour {
 
         CalculateRotation();
 
-        //drive forward        
-        //Debug.Log(Input.GetAxis("RightTrigger") + "right");
-        //Debug.Log(Input.GetAxis("LeftTrigger") + "left");
+        //drive forward       
         this.transform.Translate(Vector3.forward * (moveSpeed * -Input.GetAxis("RightTrigger")), Space.Self);
 
         //drive back

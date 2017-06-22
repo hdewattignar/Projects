@@ -8,8 +8,10 @@ public class BulletLogic : MonoBehaviour {
     public int damage = 50;
     public float lifeSpan = 5;
 
+    string origin;
+
     void Start()
-    {
+    {        
         this.transform.parent = null;
     }
 
@@ -27,7 +29,7 @@ public class BulletLogic : MonoBehaviour {
             Destroy(gameObject);
         }
 
-	}
+	}   
 
     public int GetDamage()
     {
