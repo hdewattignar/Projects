@@ -56,16 +56,22 @@ public class EnemyAI : MonoBehaviour {
     }
 
     void checkLineOfSight()
-    {
-        //right now assume line of sight
+    {        
         CalculateRotation();
 
-        if (bulletCoolDown >= 1)
+        RaycastHit los;
+        if(Physics.Raycast(firePoint.transform.position, firePoint.transform.forward, out los, weaponRange))
         {
-            FireTurret();
-        }
+            if (los.transform.tag == "Player")
+            {
+               
 
-        //TODO use raycast to determine line of sight
+                if (bulletCoolDown >= 1)
+                {
+                    FireTurret();
+                }
+            }
+        } 
     }
 
     void CalculateRotation()
