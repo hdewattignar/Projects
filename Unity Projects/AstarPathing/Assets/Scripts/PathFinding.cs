@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
 
 public class PathFinding : MonoBehaviour {
 
@@ -15,38 +16,36 @@ public class PathFinding : MonoBehaviour {
 
     void Update()
     {
-        FindPath(seeker.position, target.position);
+        if (Input.GetButtonDown("Jump"))
+        {
+            FindPath(seeker.position, target.position);
+        }        
     }
 
     void FindPath(Vector3 startPos, Vector3 targetPos)
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
 
-        List<Node> openSet = new List<Node>();
+        Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
         HashSet<Node> closedSet = new HashSet<Node>();
-
         openSet.Add(startNode);
 
         while (openSet.Count > 0)
         {
-            Node currentNode = openSet[0];
-            for (int i = 1; i < openSet.Count; i++)
-            {
-                if (openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost)               
-                {
-                    currentNode = openSet[i];
-                }
-            }
-
-            openSet.Remove(currentNode);
+            Node currentNode = openSet.RemoveFirst();            
             closedSet.Add(currentNode);
-
 
             //found it!!
             if (currentNode == targetNode)
             {
+                sw.Stop();
+                print("path found" + sw.ElapsedMilliseconds + "ms");
                 TracePath(startNode, targetNode);
+                
                 return;
             }
 
@@ -68,7 +67,11 @@ public class PathFinding : MonoBehaviour {
                     {
                         openSet.Add(neighbour);
                     }
-                }
+                    else
+                    {
+                        openSet.UpdateItem(neighbour);
+                    }                    
+                }                
             }
         }
     }
