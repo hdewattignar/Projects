@@ -11,6 +11,7 @@ public class Grid : MonoBehaviour {
     Node[,] grid;
     float nodeDiameter;
     int gridSizeX, gridSizeY;
+    public EnemyLayerType[] enemyRegion;
 
     public bool drawGizmos;
 
@@ -43,7 +44,9 @@ public class Grid : MonoBehaviour {
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkable));
-                grid[x, y] = new Node(walkable, worldPoint, x, y);
+
+                int penalty = 0;
+                grid[x, y] = new Node(walkable, worldPoint, x, y, penalty);
             }
         }
     }
@@ -104,5 +107,12 @@ public class Grid : MonoBehaviour {
                 }
             }
         }        
+    }
+
+    [System.Serializable]
+    public class EnemyLayerType
+    {
+        public LayerMask enemyLayer;
+        public int layerPenalty;
     }
 }

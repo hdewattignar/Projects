@@ -12,14 +12,16 @@ public class Node : IHeapItem<Node>{
     public int gridY;
     public Node parent;
     int heapIndex;
+    public int enemyLayerWeight;
 
 
-    public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
+    public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY , int _penalty)
     {
         walkable = _walkable;
         worldPosition = _worldPos;
         gridX = _gridX;
         gridY = _gridY;
+        enemyLayerWeight = _penalty;
     }
 
     public int fCost
