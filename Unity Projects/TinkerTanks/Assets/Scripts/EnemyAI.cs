@@ -8,6 +8,7 @@ public class EnemyAI : MonoBehaviour {
     public Transform firePoint;
     public GameObject bulletPreFab;
 
+    [Header("Stats")]
     public float bulletCoolDown = 1f;
     public float turnSpeed = 10f;
     public float health = 100;
@@ -15,12 +16,17 @@ public class EnemyAI : MonoBehaviour {
     public float lookRadius = 20;
     public float weaponRange = 20;
 
+    //pathing
     Transform target;
+    Vector3[] path;
+    int targetIndex;
+    Vector3 currentWayPoint;
     float distanceToEnemy = Mathf.Infinity;
 
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
+        //PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
     }
 
     void Update()
@@ -32,7 +38,7 @@ public class EnemyAI : MonoBehaviour {
             //check if player is within look radius 
             if (distanceToEnemy < lookRadius)
             {
-                checkLineOfSight();
+                CheckLineOfSight();
             }
 
             if (bulletCoolDown < 1)
@@ -51,11 +57,43 @@ public class EnemyAI : MonoBehaviour {
             GameObject bullet = col.gameObject;
             int damage = bullet.GetComponent<BulletLogic>().GetDamage();
 
-            takeDamage(damage, bullet);
+            TakeDamage(damage, bullet);
         }
     }
 
-    void checkLineOfSight()
+    public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
+    {
+        if (pathSuccessful)
+        {
+            path = newPath;
+            StopCoroutine("FollowPath");
+            StartCoroutine("FollowPath");
+        }
+    }
+
+    IEnumerator FollowPath()
+    {
+        currentWayPoint = path[0];
+
+        while (true)
+        {
+            if (transform.position == currentWayPoint)
+            {
+                targetIndex++;
+                if (targetIndex >= path.Length)
+                {
+                    yield break;
+                }
+
+                currentWayPoint = path[targetIndex];
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, currentWayPoint, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    void CheckLineOfSight()
     {        
         CalculateRotation();
 
@@ -64,11 +102,11 @@ public class EnemyAI : MonoBehaviour {
         {
             if (los.transform.tag == "Player")
             {
-               
+                PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
 
                 if (bulletCoolDown >= 1)
                 {
-                    FireTurret();
+                    //FireTurret();
                 }
             }
         } 
@@ -77,18 +115,21 @@ public class EnemyAI : MonoBehaviour {
     void CalculateRotation()
     {
 
-        //check input direction is not zero
-        
-        
-        //Vector3 dir = tankInputDirection.transform.position - this.transform.position;
-        //Quaternion lookRotation = Quaternion.LookRotation(dir);
-        //Vector3 rotation = (Quaternion.Lerp(this.transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles);
-        //this.transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-       
-        Vector3 dir = target.transform.position - this.transform.position;
-        Quaternion lookRotation = Quaternion.LookRotation(dir);
-        Vector3 rotation = (Quaternion.Lerp(partToRotate.transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles);
-        partToRotate.transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        //check input direction is not zero       
+
+        if (currentWayPoint != null)
+        {
+            Vector3 dirTank = currentWayPoint - this.transform.position;
+            Quaternion lookRotationTank = Quaternion.LookRotation(dirTank);
+            Vector3 rotationTank = (Quaternion.Lerp(this.transform.rotation, lookRotationTank, Time.deltaTime * turnSpeed).eulerAngles);
+            this.transform.rotation = Quaternion.Euler(0f, rotationTank.y, 0f);
+        }
+
+
+        Vector3 dirTurret = target.transform.position - this.transform.position;
+        Quaternion lookRotationTurret = Quaternion.LookRotation(dirTurret);
+        Vector3 rotationTurret = (Quaternion.Lerp(partToRotate.transform.rotation, lookRotationTurret, Time.deltaTime * turnSpeed).eulerAngles);
+        partToRotate.transform.rotation = Quaternion.Euler(0f, rotationTurret.y, 0f);
         
     }
 
@@ -98,17 +139,17 @@ public class EnemyAI : MonoBehaviour {
         bulletCoolDown = 0;
     }
 
-    void takeDamage(int damage, GameObject bullet)
+    void TakeDamage(int damage, GameObject bullet)
     {
         health -= damage;
 
         if (health <= 0)
         {
-            die(bullet);
+            Die(bullet);
         }
     }
 
-    void die(GameObject bullet)
+    void Die(GameObject bullet)
     {
         Destroy(this.gameObject);
         Destroy(bullet);
