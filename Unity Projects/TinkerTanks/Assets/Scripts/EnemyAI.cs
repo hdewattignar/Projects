@@ -65,39 +65,44 @@ public class EnemyAI : MonoBehaviour {
         }    
  
         //check distance to target
-        //if (target != null)
-        //{
-        //    distanceToEnemy = Vector3.Distance(this.transform.position, target.transform.position);
+        if (target != null)
+        {
+            distanceToEnemy = Vector3.Distance(this.transform.position, target.transform.position);
 
-        //    //check if player is within look radius 
-        //    if (distanceToEnemy < lookRadius && CheckLineOfSight())
-        //    {
-        //        lastKnownPosition = target.transform;
+            //check if player is within look radius 
+            if (distanceToEnemy < lookRadius && CheckLineOfSight())
+            {
+                lastKnownPosition = target.transform;
 
-        //        if (distanceToEnemy <= weaponRange)
-        //        {
-        //            currentState = AIState.Shoot;
-        //        }               
-        //    }
+                if (distanceToEnemy <= weaponRange)
+                {
+                    
+                    currentState = AIState.Shoot;
+                }
+                
+                currentState = AIState.Search;
+            }            
+        }
 
-        //    currentState = AIState.Search;
-        //}
-        //else
-        //{
-        //    currentState = AIState.Patrol;
-        //}
+        if(lastKnownPosition == null)
+        {
+            currentState = AIState.Patrol;
+        }
 
         //perfom task
         if (currentState == AIState.Patrol)
-        {            
+        {
+            
             Patrolling();
         }       
         else if(currentState == AIState.Shoot)
         {
+            
             FireTurret();
         }
         else if (currentState == AIState.Search)
         {
+            
             Searching();
         }
     }
@@ -115,8 +120,8 @@ public class EnemyAI : MonoBehaviour {
     }
 
     void Move()
-    {
-        CalculateRotation();
+    {        
+        CalculateRotation();       
 
         // keep distance from target
         if (Vector3.Distance(this.transform.position, target.transform.position) > safeDistance)
@@ -144,6 +149,7 @@ public class EnemyAI : MonoBehaviour {
     {
         if (path == null)
         {
+            Debug.Log("patrolling path null");
             PathFinding(patrolNodes[patrolPointIndex].transform.position);
         }
 
@@ -151,14 +157,11 @@ public class EnemyAI : MonoBehaviour {
 
         if (distToNode < nodeDistanceThreshold)
         {
-            if (patrolPointIndex != patrolNodes.Length - 1)
-            {
-                patrolPointIndex++;
-            }
-            else
+            Debug.Log("at node");
+            if (patrolPointIndex++ == patrolNodes.Length)
             {
                 patrolPointIndex = 0;
-            }
+            }            
 
             PathFinding(patrolNodes[patrolPointIndex].transform.position);
         }
@@ -168,7 +171,7 @@ public class EnemyAI : MonoBehaviour {
 
     void PathFinding(Vector3 pathTo)
     {
-        PathRequestManager.RequestPath(new PathRequest(transform.position, pathTo, OnPathFound));
+        PathRequestManager.RequestPath(new PathRequest(transform.position, pathTo, OnPathFound));        
     }
 
     void Searching()
@@ -182,8 +185,7 @@ public class EnemyAI : MonoBehaviour {
         {
             path = null;
             currentState = AIState.Patrol;
-        }
-        
+        }        
     }
 
     #endregion
@@ -206,18 +208,18 @@ public class EnemyAI : MonoBehaviour {
         {
             yield return new WaitForSeconds(.3f);
         }
-        PathRequestManager.RequestPath(new PathRequest(transform.position, target.position, OnPathFound));
+        PathRequestManager.RequestPath(new PathRequest(transform.position, lastKnownPosition.position, OnPathFound));
 
         float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-        Vector3 targetPosOld = target.position;
+        Vector3 targetPosOld = lastKnownPosition.position;
 
         while (true)
         {
             yield return new WaitForSeconds(minPathUpdateTime);
             if ((target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
             {
-                PathRequestManager.RequestPath(new PathRequest(transform.position, target.position, OnPathFound));
-                targetPosOld = target.position;
+                PathRequestManager.RequestPath(new PathRequest(transform.position, lastKnownPosition.position, OnPathFound));
+                targetPosOld = lastKnownPosition.position;
             }
         }
     }
@@ -240,9 +242,8 @@ public class EnemyAI : MonoBehaviour {
             }
 
             Move();
-        }        
-            
-        yield return null;        
+            yield return null; 
+        }              
     }
     #endregion
 
