@@ -5,8 +5,7 @@ using System.Diagnostics;
 using System;
 
 public class PathFinding : MonoBehaviour {
-
-    PathRequestManager requestManager;
+     
 
     public Transform seeker, target;
 
@@ -14,16 +13,10 @@ public class PathFinding : MonoBehaviour {
 
     void Awake()
     {
-        grid = GetComponent<Grid>();
-        requestManager = GetComponent<PathRequestManager>();
-    }   
+        grid = GetComponent<Grid>();        
+    }       
 
-    public void StartFindPath(Vector3 startPosition, Vector3 targetPosition)
-    {
-        StartCoroutine(FindPath(startPosition, targetPosition));
-    }
-
-    IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
+    public void FindPath(PathRequest request, Action<PathResult> callback)
     {
         Stopwatch sw = new Stopwatch();
         sw.Start();
@@ -31,8 +24,8 @@ public class PathFinding : MonoBehaviour {
         Vector3[] wayPoints = new Vector3[0];
         bool pathSuccess = false;
 
-        Node startNode = grid.NodeFromWorldPoint(startPos);
-        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+        Node startNode = grid.NodeFromWorldPoint(request.pathStart);
+        Node targetNode = grid.NodeFromWorldPoint(request.pathEnd);
 
         if (startNode.walkable && targetNode.walkable)
         {
@@ -48,8 +41,7 @@ public class PathFinding : MonoBehaviour {
                 //found it!!
                 if (currentNode == targetNode)
                 {
-                    sw.Stop();
-                    print("path found" + sw.ElapsedMilliseconds + "ms");
+                    sw.Stop();                    
                     pathSuccess = true;
 
 
@@ -81,16 +73,17 @@ public class PathFinding : MonoBehaviour {
                     }
                 }
             }
-        }       
+        }     
         
 
-        yield return null;
+        
         if (pathSuccess)
         {
             wayPoints = TracePath(startNode, targetNode);
+            pathSuccess = wayPoints.Length > 0;
         }
 
-        requestManager.FinishedProcessingPath(wayPoints, pathSuccess);
+        callback(new PathResult(wayPoints, pathSuccess, request.callBack));
     }
 
     Vector3[] TracePath(Node startNode, Node endNode)

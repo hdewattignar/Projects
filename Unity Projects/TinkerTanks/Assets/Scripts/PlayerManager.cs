@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour {
 
-    public float health = 100;
+    public float maxHealth;
+    public float health;
 
 	// Use this for initialization
 	void Start () {
-		
+
+        health = maxHealth;
 	}
 	
 	// Update is called once per frame
@@ -17,8 +19,7 @@ public class PlayerManager : MonoBehaviour {
 	}
 
     void OnCollisionEnter(Collision col)
-    {
-        Debug.Log("collision player");
+    {   
 
         if (col.gameObject.tag == "Bullet")
         {
