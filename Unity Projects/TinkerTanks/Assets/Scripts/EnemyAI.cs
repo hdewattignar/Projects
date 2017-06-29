@@ -107,17 +107,17 @@ public class EnemyAI : MonoBehaviour {
         }
     }
 	
-    void OnCollisionEnter(Collision col)
-    {       
+    //void OnCollisionEnter(Collision col)
+    //{       
 
-        if (col.gameObject.tag == "Bullet")
-        {
-            GameObject bullet = col.gameObject;
-            int damage = bullet.GetComponent<BulletLogic>().GetDamage();
+    //    if (col.gameObject.tag == "Bullet")
+    //    {
+    //        GameObject bullet = col.gameObject;
+    //        int damage = bullet.GetComponent<BulletLogic>().GetDamage();
 
-            TakeDamage(damage, bullet);
-        }
-    }
+    //        TakeDamage(damage, bullet);
+    //    }
+    //}
 
     void Move()
     {        
@@ -285,20 +285,21 @@ public class EnemyAI : MonoBehaviour {
         }     
     }    
 
-    void TakeDamage(int damage, GameObject bullet)
+    public void TakeDamage(int damage)
     {
         health -= damage;
 
         if (health <= 0)
         {
-            Die(bullet);
+            Die();
         }
     }
 
-    void Die(GameObject bullet)
+    void Die()
     {
-        Destroy(this.gameObject);
-        Destroy(bullet);
+        Destroy(this.gameObject);   
+     
+        // TODO: add effect plus maybe a pick up
     }
 
     //called when the player dies to remove it as the target

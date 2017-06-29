@@ -16,32 +16,19 @@ public class PlayerManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-	}
+	}    
 
-    void OnCollisionEnter(Collision col)
-    {   
-
-        if (col.gameObject.tag == "Bullet")
-        {
-            GameObject bullet = col.gameObject;
-
-            int damage = bullet.GetComponent<BulletLogic>().GetDamage();
-
-            takeDamage(damage, bullet);
-        }
-    }
-
-    void takeDamage(int damage, GameObject bullet)
+    public void TakeDamage(int damage)
     {
         health -= damage;
 
         if (health <= 0)
         {
-            die(bullet);
+            die();
         }
     }
 
-    void die(GameObject bullet)
+    void die()
     {
         //remove the player as enemys target
 
@@ -52,7 +39,6 @@ public class PlayerManager : MonoBehaviour {
             enemys[i].GetComponent<EnemyAI>().RemoveTarget();
         }
 
-            Destroy(this.gameObject);
-        Destroy(bullet);
+        Destroy(this.gameObject);        
     }
 }

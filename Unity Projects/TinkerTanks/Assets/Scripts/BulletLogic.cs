@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletLogic : MonoBehaviour {
-
+    
+    public GameObject impactEffect;
     public float bulletSpeed = 1;
     public int damage = 50;
     public float lifeSpan = 5;
@@ -29,7 +30,27 @@ public class BulletLogic : MonoBehaviour {
             Destroy(gameObject);
         }
 
-	}   
+	}
+
+    void OnCollisionEnter(Collision col)
+    {
+        impactEffect.GetComponent<Renderer>().material = col.gameObject.GetComponent<Renderer>().material;
+
+        GameObject effectInst = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
+        Destroy(effectInst, 1f);
+
+        if (col.gameObject.tag == "Enemy")
+        {
+            col.gameObject.GetComponent<EnemyAI>().TakeDamage(damage);
+        }
+
+        if (col.gameObject.tag == "Player")
+        {
+            col.gameObject.GetComponent<PlayerManager>().TakeDamage(damage);
+        }
+
+        Destroy(this.gameObject);
+    }
 
     public int GetDamage()
     {
