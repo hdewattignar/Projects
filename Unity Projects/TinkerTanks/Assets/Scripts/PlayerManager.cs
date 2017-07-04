@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour {
+    
+    
+    public Transform firePoint;
+    public GameObject bulletPreFab;
 
+    public float bulletCoolDown = 1;
     public float maxHealth;
     public float health;
 
@@ -15,8 +20,36 @@ public class PlayerManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (bulletCoolDown < 1)
+        {
+            bulletCoolDown += Time.deltaTime;
+
+            if (bulletCoolDown > 1)
+            {
+                bulletCoolDown = 1;
+            }
+        }
 		
-	}    
+	}
+
+    public void FireTurret()
+    {
+        if (bulletCoolDown == 1)
+        {
+            GameObject bulletGO = (GameObject)Instantiate(bulletPreFab, firePoint.position, firePoint.rotation);
+            bulletCoolDown = 0;
+        }        
+    }
+
+    public void Heal(float healthRegen)
+    {
+        health += healthRegen;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+    }
 
     public void TakeDamage(int damage)
     {
@@ -40,5 +73,21 @@ public class PlayerManager : MonoBehaviour {
         }
 
         Destroy(this.gameObject);        
+    }
+
+    public float GetHealthPertentage()
+    {
+        if (health > 0)        
+            return health / maxHealth;        
+        else
+            return 0;
+    }
+
+    public float GetCoolDownPercentage()
+    {
+        if (bulletCoolDown > 0)
+            return bulletCoolDown / 1;
+        else
+            return 0;
     }
 }

@@ -27,20 +27,22 @@ public class EnemyAI : MonoBehaviour {
     public float weaponRange = 20;
     public float safeDistance = 15;
 
-    //pathing
-    Transform target;
-    Transform lastKnownPosition;
+    //pathing  
+    [Header("pathing")]
+    public Transform lastKnownPosition;
     Vector3[] path;
     int targetIndex;
-    Vector3 currentWayPoint;
-    float distanceToEnemy = Mathf.Infinity;
-    int patrolPointIndex = 0;
+    public Vector3 currentWayPoint;
+    public float distanceToEnemy = Mathf.Infinity;
+    public int patrolNodeIndex = 0;
     float nodeDistanceThreshold = 5;
 
-    void Start()
-    {
-        target = GameObject.FindGameObjectWithTag("Player").transform;        
-    }
+    [Header("Death")]
+    public GameObject[] drops;
+    public GameObject deathEffect;
+    public int yOffset = 5;
+    public int force = 2;
+   
 
     void Update()
     {
@@ -62,25 +64,24 @@ public class EnemyAI : MonoBehaviour {
             {
                 waitAfterFire = 1;
             }
-        }    
+        }
+
+        CheckLineOfSight();
  
         //check distance to target
-        if (target != null)
+        if (lastKnownPosition != null)
         {
-            distanceToEnemy = Vector3.Distance(this.transform.position, target.transform.position);
+            distanceToEnemy = Vector3.Distance(this.transform.position, lastKnownPosition.transform.position);
 
             //check if player is within look radius 
-            if (distanceToEnemy < lookRadius && CheckLineOfSight())
-            {
-                lastKnownPosition = target.transform;
+            if (distanceToEnemy <= lookRadius)
+            {                
+                currentState = AIState.Search;
 
                 if (distanceToEnemy <= weaponRange)
-                {
-                    
+                {                    
                     currentState = AIState.Shoot;
-                }
-                
-                currentState = AIState.Search;
+                }                
             }            
         }
 
@@ -91,13 +92,11 @@ public class EnemyAI : MonoBehaviour {
 
         //perfom task
         if (currentState == AIState.Patrol)
-        {
-            
+        {            
             Patrolling();
         }       
         else if(currentState == AIState.Shoot)
-        {
-            
+        {            
             FireTurret();
         }
         else if (currentState == AIState.Search)
@@ -105,29 +104,12 @@ public class EnemyAI : MonoBehaviour {
             
             Searching();
         }
-    }
-	
-    //void OnCollisionEnter(Collision col)
-    //{       
-
-    //    if (col.gameObject.tag == "Bullet")
-    //    {
-    //        GameObject bullet = col.gameObject;
-    //        int damage = bullet.GetComponent<BulletLogic>().GetDamage();
-
-    //        TakeDamage(damage, bullet);
-    //    }
-    //}
+    }    
 
     void Move()
     {        
-        CalculateRotation();       
-
-        // keep distance from target
-        if (Vector3.Distance(this.transform.position, target.transform.position) > safeDistance)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, currentWayPoint, moveSpeed * Time.deltaTime);
-        }               
+        CalculateRotation();
+        transform.position = Vector3.MoveTowards(transform.position, currentWayPoint, moveSpeed * Time.deltaTime);           
     }
 
     #region States
@@ -136,6 +118,7 @@ public class EnemyAI : MonoBehaviour {
     {
         //stop tank to shoot
         path = null;
+        CalculateRotation();
 
         if (bulletCoolDown >= 1)
         {
@@ -148,22 +131,23 @@ public class EnemyAI : MonoBehaviour {
     void Patrolling()
     {
         if (path == null)
-        {
-            Debug.Log("patrolling path null");
-            PathFinding(patrolNodes[patrolPointIndex].transform.position);
+        {            
+            PathFinding(patrolNodes[patrolNodeIndex].transform.position);
         }
 
-        float distToNode = Vector3.Distance(this.transform.position, currentWayPoint);
+        float distToNode = Vector3.Distance(this.transform.position, patrolNodes[patrolNodeIndex].transform.position);
 
         if (distToNode < nodeDistanceThreshold)
         {
-            Debug.Log("at node");
-            if (patrolPointIndex++ == patrolNodes.Length)
+            patrolNodeIndex++;
+
+            if (patrolNodeIndex == patrolNodes.Length)
             {
-                patrolPointIndex = 0;
+                patrolNodeIndex = 0;
             }            
 
-            PathFinding(patrolNodes[patrolPointIndex].transform.position);
+            PathFinding(patrolNodes[patrolNodeIndex].transform.position);
+            Debug.Log(patrolNodes[patrolNodeIndex].transform.position);
         }
 
         Move();
@@ -179,7 +163,11 @@ public class EnemyAI : MonoBehaviour {
         if(lastKnownPosition != null && Vector3.Distance(transform.position, lastKnownPosition.position) > nodeDistanceThreshold)
         {
             PathFinding(lastKnownPosition.position);
-            Move();
+            // keep distance from target
+            if (Vector3.Distance(this.transform.position, lastKnownPosition.transform.position) > safeDistance)
+            {
+                Move();
+            }            
         }
         else
         {
@@ -194,41 +182,19 @@ public class EnemyAI : MonoBehaviour {
     //path finding
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
-        if (pathSuccessful)
+        if (pathSuccessful  && this.gameObject != null)
         {
             path = newPath;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
         }
-    }
-
-    IEnumerator UpdatePath()
-    {
-        if (Time.timeSinceLevelLoad < .3f)
-        {
-            yield return new WaitForSeconds(.3f);
-        }
-        PathRequestManager.RequestPath(new PathRequest(transform.position, lastKnownPosition.position, OnPathFound));
-
-        float sqrMoveThreshold = pathUpdateMoveThreshold * pathUpdateMoveThreshold;
-        Vector3 targetPosOld = lastKnownPosition.position;
-
-        while (true)
-        {
-            yield return new WaitForSeconds(minPathUpdateTime);
-            if ((target.position - targetPosOld).sqrMagnitude > sqrMoveThreshold)
-            {
-                PathRequestManager.RequestPath(new PathRequest(transform.position, lastKnownPosition.position, OnPathFound));
-                targetPosOld = lastKnownPosition.position;
-            }
-        }
-    }
+    }    
 
     IEnumerator FollowPath()
     {        
         currentWayPoint = path[0];
 
-        while (true)
+        while (this.gameObject != null)
         {
             if (transform.position == currentWayPoint)
             {
@@ -255,6 +221,7 @@ public class EnemyAI : MonoBehaviour {
         {
             if (los.transform.tag == "Player")
             {
+                lastKnownPosition = los.transform;
                 return true;                
             }           
         }
@@ -274,7 +241,7 @@ public class EnemyAI : MonoBehaviour {
 
         if (distanceToEnemy < lookRadius)
         {
-            Vector3 dirTurret = target.transform.position - this.transform.position;
+            Vector3 dirTurret = lastKnownPosition.transform.position - this.transform.position;
             Quaternion lookRotationTurret = Quaternion.LookRotation(dirTurret);
             Vector3 rotationTurret = (Quaternion.Lerp(partToRotate.transform.rotation, lookRotationTurret, Time.deltaTime * turnSpeed).eulerAngles);
             partToRotate.transform.rotation = Quaternion.Euler(0f, rotationTurret.y, 0f);   
@@ -297,17 +264,27 @@ public class EnemyAI : MonoBehaviour {
 
     void Die()
     {
-        StopCoroutine("FollowPath");
-        this.gameObject.GetComponentInChildren<EnemyDeath>().Die();
-        Destroy(this.gameObject);   
-     
-        // TODO: add effect plus maybe a pick up
-        
+        StopCoroutine("FollowPath");        
+
+        deathEffect.GetComponent<Renderer>().material = this.gameObject.GetComponent<Renderer>().material;
+        GameObject effectInst = (GameObject)Instantiate(deathEffect, transform.position, transform.rotation);
+        Destroy(effectInst, 1f);
+
+        Vector3 dropPositionOffset = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+
+        for (int i = 0; i < drops.Length; i++)
+        {
+            GameObject currentDrop = (GameObject)Instantiate(drops[i], dropPositionOffset, this.transform.rotation);
+            Rigidbody rb = currentDrop.GetComponent<Rigidbody>();
+            rb.AddForce(new Vector3(Random.Range(-force, force), force, Random.Range(-force, force)));
+        }
+
+        Destroy(this.gameObject);
     }
 
     //called when the player dies to remove it as the target
     public void RemoveTarget()
     {
-        target = null;
+        lastKnownPosition = null;
     }
 }
