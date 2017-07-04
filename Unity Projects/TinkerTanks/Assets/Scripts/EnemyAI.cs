@@ -297,9 +297,12 @@ public class EnemyAI : MonoBehaviour {
 
     void Die()
     {
+        StopCoroutine("FollowPath");
+        this.gameObject.GetComponentInChildren<EnemyDeath>().Die();
         Destroy(this.gameObject);   
      
         // TODO: add effect plus maybe a pick up
+        
     }
 
     //called when the player dies to remove it as the target
