@@ -62,8 +62,8 @@ MonoBehaviour:
     y: 0
     width: 1666
     height: 996
-  m_MinSize: {x: 100, y: 122}
-  m_MaxSize: {x: 4000, y: 4022}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 122}
   m_MaxSize: {x: 4000, y: 4022}
   vertical: 0
-  controlID: 9612
+  controlID: 31
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -113,7 +113,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 997
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &6
 MonoBehaviour:
@@ -177,8 +177,8 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 711, y: 492}
-  m_MaxSize: {x: 18006, y: 14042}
+  m_MinSize: {x: 713, y: 492}
+  m_MaxSize: {x: 18008, y: 14042}
   vertical: 0
   controlID: 10
 --- !u!114 &9
@@ -199,8 +199,8 @@ MonoBehaviour:
     y: 0
     width: 233
     height: 947
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -444,9 +444,9 @@ MonoBehaviour:
     height: 926
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 34010000
-    m_LastClickedID: 0
-    m_ExpandedIDs: 3c08fbff6408fbff0c40fbff4448fbff8e5bfbff9862fbfffe63fbff1464fbff1664fbff5665fbff86f0fcff88f0fcff5a05fdfffe0bfdff8c3dfdffa042fdff4647fdff2849fdff8e4ffdffaaf8fdff8afbfdffb2fcfdff1afdfdff30fdfdff32fdfdff72fefdff9408fefffc70feff620affffc80bffff623bffff2e46ffffc279ffff507cffff6492ffff88b8ffffa2b8ffff4ce2ffff66e2ffff68e2ffff4ce5ffffe6fbffff00000000bc26000038dc01005edc010078dc0100d4dc0100dedc010052eb010082eb0100d2eb0100f4eb0100
+    m_SelectedIDs: 2838ffff
+    m_LastClickedID: -51160
+    m_ExpandedIDs: 485cffffa6f6ffffaaf6ffffbef6ffffc0f6ffff1af7ffffe6fbffff000000004e270000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -506,19 +506,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scenes
+    - Assets/Fonts
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Fonts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\Git\Projects\Unity Projects\TinkerTanks
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 27}
-    m_SelectedIDs: 46260000
-    m_LastClickedID: 9798
-    m_ExpandedIDs: 00000000c8240000642500006e250000d825000028260000502600006e2c0000ffffff7f
+    m_SelectedIDs: f6240000
+    m_LastClickedID: 9462
+    m_ExpandedIDs: 00000000cc2400008e25000098250000202600008c260000c0260000902d0000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -546,7 +546,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 9c44ffff
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c8240000322600004a2600006e2c0000762c0000b22c0000
+    m_ExpandedIDs: 00000000cc2400008e25000098250000202600008c260000c0260000902d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -574,7 +574,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: ccd60000a4090000660800006a1c0000721c000000000000821e0000
+    m_ExpandedInstanceIDs: ccd60000a4090000660800006a1c0000721c0000821e000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -628,7 +628,7 @@ MonoBehaviour:
     width: 1381
     height: 655
   m_SceneLighting: 1
-  lastFramingTime: 12592.112178599917
+  lastFramingTime: 905.9753753577629
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
@@ -662,14 +662,14 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 774.0538
+    m_Target: 1321.7334
     speed: 2
-    m_Value: 774.0538
+    m_Value: 1321.7334
   m_Ortho:
     m_Target: 1
     speed: 2
     m_Value: 1
-  m_LastSceneViewRotation: {x: 0.06570073, y: 0.92663383, z: -0.19256857, w: 0.31614953}
+  m_LastSceneViewRotation: {x: 0.28710914, y: -0.024994921, z: 0.007494464, w: 0.9575424}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
