@@ -17,6 +17,7 @@ public class Manager : MonoBehaviour {
 	void Start () {
 
         gameRunning = true;
+        pauseMenu.SetActive(false);
 
 	}
 	
@@ -56,6 +57,5 @@ public class Manager : MonoBehaviour {
     {
         return gameRunning;
     }
-
 
 }

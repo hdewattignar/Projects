@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour {
 
     //Ai states
-    public enum AIState { Patrol, Shoot, Search };
+    public enum AIState { Patrol, Shoot, Search, Chase };
     public AIState currentState = AIState.Patrol;
 
     [Header("GameObjects")]
@@ -13,6 +13,8 @@ public class EnemyAI : MonoBehaviour {
     public Transform firePoint;
     public GameObject bulletPreFab;
     public Transform[] patrolNodes;
+
+    public GameObject waypointMarker; //for testing
     
     const float minPathUpdateTime = .2f;
     const float pathUpdateMoveThreshold = .5f;
@@ -29,13 +31,13 @@ public class EnemyAI : MonoBehaviour {
 
     //pathing  
     [Header("pathing")]
-    public Transform lastKnownPosition;
+    Transform lastKnownPosition;
     Vector3[] path;
     int targetIndex;
-    public Vector3 currentWayPoint;
-    public float distanceToEnemy = Mathf.Infinity;
-    public int patrolNodeIndex = 0;
-    float nodeDistanceThreshold = 5;
+    Vector3 currentWayPoint;
+    float distanceToEnemy = Mathf.Infinity;
+    int patrolNodeIndex = 0;
+    public float nodeDistanceThreshold = 5;
 
     [Header("Death")]
     public GameObject[] drops;
@@ -46,8 +48,6 @@ public class EnemyAI : MonoBehaviour {
 
     void Update()
     {
-
-        
         //cooldown weapon
         if (bulletCoolDown < 1)
         {
@@ -68,6 +68,12 @@ public class EnemyAI : MonoBehaviour {
             }
         }
 
+        if (currentWayPoint != null)
+        {           
+            waypointMarker.transform.position = currentWayPoint; // for testing       
+
+        }
+
         CheckLineOfSight();
 
         //check distance to target
@@ -78,13 +84,13 @@ public class EnemyAI : MonoBehaviour {
             //check if player is within look radius 
             if (distanceToEnemy <= lookRadius)
             {
-                currentState = AIState.Search;
+                //currentState = AIState.Search;
 
                 if (distanceToEnemy <= weaponRange)
                 {
-                    currentState = AIState.Shoot;
+                    //currentState = AIState.Shoot;
                 }
-            }
+            }            
         }
 
         if (lastKnownPosition == null)
@@ -111,7 +117,7 @@ public class EnemyAI : MonoBehaviour {
     void Move()
     {        
         CalculateRotation();
-        transform.position = Vector3.MoveTowards(transform.position, currentWayPoint, moveSpeed * Time.deltaTime);           
+        transform.position = Vector3.MoveTowards(transform.position, currentWayPoint, moveSpeed * Time.deltaTime);        
     }
 
     #region States
@@ -134,23 +140,22 @@ public class EnemyAI : MonoBehaviour {
     {
         if (path == null)
         {            
-            PathFinding(patrolNodes[patrolNodeIndex].transform.position);
+            PathFinding(patrolNodes[0].transform.position);
         }
 
-        float distToNode = Vector3.Distance(this.transform.position, patrolNodes[patrolNodeIndex].transform.position);
+        float distToNode = Vector3.Distance(transform.position, patrolNodes[patrolNodeIndex].transform.position);
 
-        if (distToNode < nodeDistanceThreshold)
-        {
-            patrolNodeIndex++;
+        if (distToNode <= nodeDistanceThreshold)
+        {            
+            patrolNodeIndex++;            
 
-            if (patrolNodeIndex == patrolNodes.Length)
-            {
+            if (patrolNodeIndex >= patrolNodes.Length)
+            {                
                 patrolNodeIndex = 0;
             }            
 
-            PathFinding(patrolNodes[patrolNodeIndex].transform.position);
-            Debug.Log(patrolNodes[patrolNodeIndex].transform.position);
-        }
+            PathFinding(patrolNodes[patrolNodeIndex].transform.position);            
+        }       
 
         Move();
     }
@@ -178,36 +183,60 @@ public class EnemyAI : MonoBehaviour {
         }        
     }
 
+    void showPathNodes()
+    {
+        foreach (Vector3 p in path)
+        {
+            GameObject t = Instantiate(waypointMarker, p, this.transform.rotation);
+            Destroy(t, 1f);
+        }
+    }
+
     #endregion
 
     #region pathfinding
     //path finding
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
-        if (pathSuccessful  && this.gameObject != null)
+        if (pathSuccessful)
         {
             path = newPath;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
+            showPathNodes();
         }
     }    
 
     IEnumerator FollowPath()
     {        
         currentWayPoint = path[0];
+        targetIndex = 0;
 
         while (this.gameObject != null)
         {
-            if (transform.position == currentWayPoint)
-            {
+            if (path == null)
+                Debug.Log("path null");
+
+            Debug.Log("path length = " + path.Length);
+
+            float distToNode = Vector3.Distance(transform.position, currentWayPoint);
+
+            //Debug.Log("distance = " + distToNode);
+
+            //if (transform.position == currentWayPoint)
+            if (distToNode < 2)
+            {                
                 targetIndex++;
                 if (targetIndex >= path.Length)
                 {
+                    Debug.Log("break");
                     yield break;
                 }
-
-                currentWayPoint = path[targetIndex];
+                
+                currentWayPoint = path[targetIndex];                
             }
+
+            showPathNodes();
 
             Move();
             yield return null; 
