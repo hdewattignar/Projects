@@ -46,6 +46,8 @@ public class EnemyAI : MonoBehaviour {
 
     void Update()
     {
+
+        
         //cooldown weapon
         if (bulletCoolDown < 1)
         {
@@ -67,7 +69,7 @@ public class EnemyAI : MonoBehaviour {
         }
 
         CheckLineOfSight();
- 
+
         //check distance to target
         if (lastKnownPosition != null)
         {
@@ -75,35 +77,35 @@ public class EnemyAI : MonoBehaviour {
 
             //check if player is within look radius 
             if (distanceToEnemy <= lookRadius)
-            {                
+            {
                 currentState = AIState.Search;
 
                 if (distanceToEnemy <= weaponRange)
-                {                    
+                {
                     currentState = AIState.Shoot;
-                }                
-            }            
+                }
+            }
         }
 
-        if(lastKnownPosition == null)
+        if (lastKnownPosition == null)
         {
             currentState = AIState.Patrol;
         }
 
         //perfom task
         if (currentState == AIState.Patrol)
-        {            
+        {
             Patrolling();
-        }       
-        else if(currentState == AIState.Shoot)
-        {            
+        }
+        else if (currentState == AIState.Shoot)
+        {
             FireTurret();
         }
         else if (currentState == AIState.Search)
         {
-            
+
             Searching();
-        }
+        }        
     }    
 
     void Move()

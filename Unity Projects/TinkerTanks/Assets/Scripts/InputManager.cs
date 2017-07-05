@@ -6,12 +6,17 @@ public class InputManager : MonoBehaviour {
 
     public Transform partToRotate;
     public float turnSpeed = 10f;
-    public float moveSpeed = 10f;  
+    public float moveSpeed = 10f;
+    public GameObject manager;
 
 	// Update is called once per frame
 	void Update () {
 
-        GetControlInputs();
+        if (Manager.IsGameRunning())
+        {
+            GetControlInputs();        
+
+        }
 	}
 
     void GetControlInputs()
@@ -50,6 +55,16 @@ public class InputManager : MonoBehaviour {
         if (Input.GetButton("LeftShoulderButton"))
         {
             GetComponentInParent<PlayerManager>().FireTurret();
+        }
+
+        if (Input.GetButton("StartButton"))
+        {            
+            manager.GetComponent<Manager>().Pause();            
+        }
+
+        if (Input.GetButton("BackButton"))
+        {
+
         }
     }    
 
