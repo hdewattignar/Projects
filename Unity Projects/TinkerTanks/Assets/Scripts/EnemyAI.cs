@@ -13,6 +13,7 @@ public class EnemyAI : MonoBehaviour {
     public Transform firePoint;
     public GameObject bulletPreFab;
     public Transform[] patrolNodes;
+    public Transform lineOfSight;
 
     public GameObject waypointMarker; //for testing
     
@@ -38,6 +39,7 @@ public class EnemyAI : MonoBehaviour {
     float distanceToEnemy = Mathf.Infinity;
     int patrolNodeIndex = 0;
     public float nodeDistanceThreshold = 5;
+    float updatePathTimer = 1f;
 
     [Header("Death")]
     public GameObject[] drops;
@@ -48,30 +50,11 @@ public class EnemyAI : MonoBehaviour {
 
     void Update()
     {
-        //cooldown weapon
-        if (bulletCoolDown < 1)
-        {
-            bulletCoolDown += Time.deltaTime;
-            if (bulletCoolDown > 1)
-            {
-                bulletCoolDown = 1;
-            }
-        }
-
-        //wait between shots
-        if (waitAfterFire < 1)
-        {
-            waitAfterFire += Time.deltaTime;
-            if (waitAfterFire > 1)
-            {
-                waitAfterFire = 1;
-            }
-        }
+        UpdadeCooldowns();
 
         if (currentWayPoint != null)
-        {           
-            waypointMarker.transform.position = currentWayPoint; // for testing       
-
+        {
+            waypointMarker.transform.position = currentWayPoint; // for testing 
         }
 
         CheckLineOfSight();
@@ -79,16 +62,16 @@ public class EnemyAI : MonoBehaviour {
         //check distance to target
         if (lastKnownPosition != null)
         {
-            distanceToEnemy = Vector3.Distance(this.transform.position, lastKnownPosition.transform.position);
+            distanceToEnemy = Vector3.Distance(this.transform.position, lastKnownPosition.position);
 
             //check if player is within look radius 
             if (distanceToEnemy <= lookRadius)
             {
-                //currentState = AIState.Search;
+                currentState = AIState.Search;
 
                 if (distanceToEnemy <= weaponRange)
                 {
-                    //currentState = AIState.Shoot;
+                    FireTurret();
                 }
             }            
         }
@@ -105,14 +88,47 @@ public class EnemyAI : MonoBehaviour {
         }
         else if (currentState == AIState.Shoot)
         {
-            FireTurret();
+            
         }
         else if (currentState == AIState.Search)
         {
-
             Searching();
         }        
-    }    
+    }
+
+    void UpdadeCooldowns()
+    {
+        //cooldown weapon
+        if (bulletCoolDown < 1)
+        {
+            bulletCoolDown += Time.deltaTime;
+            if (bulletCoolDown > 1)
+            {
+                bulletCoolDown = 1;
+            }
+        }
+
+        if (updatePathTimer < 1)
+        {
+            updatePathTimer += Time.deltaTime;
+            if (updatePathTimer > 1)
+            {
+                updatePathTimer = 1;
+            }
+        }
+
+        //wait between shots
+        if (waitAfterFire < 1)
+        {
+            waitAfterFire += Time.deltaTime;
+            if (waitAfterFire > 1)
+            {
+                waitAfterFire = 1;
+            }
+        }
+
+       
+    }
 
     void Move()
     {        
@@ -123,9 +139,8 @@ public class EnemyAI : MonoBehaviour {
     #region States
 
     void FireTurret()
-    {
-        //stop tank to shoot
-        path = null;
+    {      
+        
         CalculateRotation();
 
         if (bulletCoolDown >= 1)
@@ -139,7 +154,8 @@ public class EnemyAI : MonoBehaviour {
     void Patrolling()
     {
         if (path == null)
-        {            
+        {
+            SortWayPoints();
             PathFinding(patrolNodes[0].transform.position);
         }
 
@@ -167,11 +183,16 @@ public class EnemyAI : MonoBehaviour {
 
     void Searching()
     {
-        if(lastKnownPosition != null && Vector3.Distance(transform.position, lastKnownPosition.position) > nodeDistanceThreshold)
+        if (updatePathTimer == 1)
         {
+            updatePathTimer = 0;
             PathFinding(lastKnownPosition.position);
+        }
+
+        if(lastKnownPosition != null && Vector3.Distance(transform.position, lastKnownPosition.position) > nodeDistanceThreshold)
+        {            
             // keep distance from target
-            if (Vector3.Distance(this.transform.position, lastKnownPosition.transform.position) > safeDistance)
+            if (Vector3.Distance(this.transform.position, lastKnownPosition.position) > safeDistance)
             {
                 Move();
             }            
@@ -185,11 +206,14 @@ public class EnemyAI : MonoBehaviour {
 
     void showPathNodes()
     {
-        foreach (Vector3 p in path)
+        if (path != null)
         {
-            GameObject t = Instantiate(waypointMarker, p, this.transform.rotation);
-            Destroy(t, 1f);
-        }
+            foreach (Vector3 p in path)
+            {
+                GameObject t = Instantiate(waypointMarker, p, this.transform.rotation);
+                Destroy(t, 1f);
+            }
+        }        
     }
 
     #endregion
@@ -215,28 +239,22 @@ public class EnemyAI : MonoBehaviour {
         while (this.gameObject != null)
         {
             if (path == null)
-                Debug.Log("path null");
-
-            Debug.Log("path length = " + path.Length);
+                Debug.Log("path null");            
 
             float distToNode = Vector3.Distance(transform.position, currentWayPoint);
-
-            //Debug.Log("distance = " + distToNode);
-
-            //if (transform.position == currentWayPoint)
+            
             if (distToNode < 2)
             {                
                 targetIndex++;
                 if (targetIndex >= path.Length)
-                {
-                    Debug.Log("break");
+                {                    
                     yield break;
                 }
                 
                 currentWayPoint = path[targetIndex];                
             }
 
-            showPathNodes();
+            //showPathNodes();
 
             Move();
             yield return null; 
@@ -247,15 +265,29 @@ public class EnemyAI : MonoBehaviour {
     
     bool CheckLineOfSight()
     {
+        Collider[] hitColliders = Physics.OverlapSphere(lineOfSight.transform.position, lookRadius);
         RaycastHit los;
-        if(Physics.Raycast(firePoint.transform.position, firePoint.transform.forward, out los, weaponRange))
+
+        for (int i = 0; i < hitColliders.Length; i++)
         {
-            if (los.transform.tag == "Player")
+            if (hitColliders[i].tag != "Enemy")
             {
-                lastKnownPosition = los.transform;
-                return true;                
-            }           
-        }
+                Vector3 dir = hitColliders[i].transform.position - lineOfSight.transform.position;
+                Quaternion lookRotation = Quaternion.LookRotation(dir);
+                Vector3 rotation = (Quaternion.Lerp(lineOfSight.transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles);
+                lineOfSight.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);                
+
+                if (Physics.Raycast(lineOfSight.transform.position, lineOfSight.transform.forward, out los, lookRadius))
+                {
+                    if (los.transform.tag == "Player")
+                    {
+                        //Debug.DrawRay(lineOfSight.transform.position, lineOfSight.transform.forward, Color.red, 1f);
+                        lastKnownPosition = los.transform;
+                        return true;
+                    }
+                }
+            }            
+        }       
 
         return false;
     }
@@ -311,6 +343,41 @@ public class EnemyAI : MonoBehaviour {
         }
 
         Destroy(this.gameObject);
+    }
+
+    void SortWayPoints()
+    {        
+        int n = patrolNodes.Length;
+        
+        bool sorted = false;
+
+        while(true)
+        {
+            bool swap = false;
+
+            for (int i = 1; i < n; i++)
+            {
+                if ((Vector3.Distance(this.transform.position, patrolNodes[i - 1].position)) > (Vector3.Distance(this.transform.position, patrolNodes[i].position)))
+                {
+                    SwapPatrolNodes(i - 1, i);
+                    swap = true;
+                }                
+            }
+
+            if (swap == false)
+            {
+                break;
+            }
+        }
+    }
+
+    void SwapPatrolNodes(int a, int b)
+    {
+        Debug.Log("swap");
+        Transform temp;
+        temp = patrolNodes[a];
+        patrolNodes[a] = patrolNodes[b];
+        patrolNodes[b] = temp;
     }
 
     //called when the player dies to remove it as the target

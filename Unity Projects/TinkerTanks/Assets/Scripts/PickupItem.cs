@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PickupItem : MonoBehaviour {
 
-    public float healthRegen = 10;
+    public float healthRegen = 15;
 
 	void OnCollisionEnter(Collision col)
     {
