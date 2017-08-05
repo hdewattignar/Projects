@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\BlockColourRandomizer.cs" />
      <Compile Include="Assets\Scripts\BulletLogic.cs" />
      <Compile Include="Assets\Scripts\EnemyAI.cs" />
+     <Compile Include="Assets\Scripts\GUIManager.cs" />
      <Compile Include="Assets\Scripts\Grid.cs" />
      <Compile Include="Assets\Scripts\Heap.cs" />
      <Compile Include="Assets\Scripts\InputManager.cs" />

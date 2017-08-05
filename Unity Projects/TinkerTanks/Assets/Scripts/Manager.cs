@@ -11,21 +11,52 @@ public class Manager : MonoBehaviour {
     public GameObject player;
     static bool gameRunning = false;
     public SceneFader sf;
-    public GameObject pauseMenu;
+    public GameObject pauseMenu;    
     public Transform[] waypoints;
+    public Button continueButton;
 
 	// Use this for initialization
 	void Start () {
 
         gameRunning = true;
-        pauseMenu.SetActive(false);
-
+        pauseMenu.SetActive(false);        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        healthBar.fillAmount = player.GetComponent<PlayerManager>().GetHealthPertentage();
-        coolDown.fillAmount = player.GetComponent<PlayerManager>().GetCoolDownPercentage();        
+
+        if (player != null)
+        {
+            healthBar.fillAmount = player.GetComponent<PlayerManager>().GetHealthPertentage();
+            coolDown.fillAmount = player.GetComponent<PlayerManager>().GetCoolDownPercentage();
+        }
+        else
+        {
+            healthBar.fillAmount = 0;
+            coolDown.fillAmount = 0;
+            Debug.Log("no player");
+        }
+        
+
+        if (player == null)
+        {
+            DisplayGameOverMenu();
+            Debug.Log("no player");
+        }
+        
+    }
+
+    public void DisplayGameOverMenu()
+    {
+        continueButton.interactable = false;
+        pauseMenu.SetActive(true);
+    }
+
+    public void DisplayPauseMenu()
+    {
+        gameRunning = false;
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void Retry()
@@ -42,9 +73,7 @@ public class Manager : MonoBehaviour {
 
     public void Pause()
     {
-        gameRunning = false;
-        pauseMenu.SetActive(true);
-        Time.timeScale = 0;        
+        DisplayPauseMenu();
     }
 
     public void Continue()
@@ -61,22 +90,12 @@ public class Manager : MonoBehaviour {
 
     public Transform[] GetWayPoints()
     {
-        if (waypoints == null || waypoints.Length == 0)
-            Debug.Log("no waypoints");
-        else
-            Debug.Log("waypoints in manager");
-
         return waypoints;
     }
 
     public void SetPlayer(GameObject newPlayer){
 
-        player = newPlayer;
-
-        if (player != null)
-        {
-            Debug.Log("player Set");
-        }
+        player = newPlayer;        
     }
 
 }
