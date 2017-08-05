@@ -11,11 +11,11 @@ public class EnemyAI : MonoBehaviour {
     [Header("GameObjects")]
     public Transform partToRotate;
     public Transform firePoint;
-    public GameObject bulletPreFab;
-    public Transform[] patrolNodes;
+    public GameObject bulletPreFab;    
     public Transform lineOfSight;
+    Transform[] patrolNodes;
 
-    public GameObject waypointMarker; //for testing
+    //public GameObject waypointMarker; //for testing
     
     const float minPathUpdateTime = .2f;
     const float pathUpdateMoveThreshold = .5f;
@@ -46,15 +46,31 @@ public class EnemyAI : MonoBehaviour {
     public GameObject deathEffect;
     public int yOffset = 5;
     public int force = 2;
-   
 
+    void Awake()
+    {
+        getWaypoints();
+    }
+
+    void getWaypoints()
+    {
+        patrolNodes = FindObjectOfType<Manager>().GetWayPoints();
+        if (patrolNodes.Length == 0)
+            Debug.Log("nowaypoints");
+    }
     void Update()
     {
-        UpdadeCooldowns();
+        //if (patrolNodes == null)
+        //{
+        //    getWaypoints();
+        //    Debug.Log("Getting Waypoints in update");
+        //}
+
+        UpdateCooldowns();
 
         if (currentWayPoint != null)
         {
-            waypointMarker.transform.position = currentWayPoint; // for testing 
+            //waypointMarker.transform.position = currentWayPoint; // for testing 
         }
 
         CheckLineOfSight();
@@ -96,7 +112,7 @@ public class EnemyAI : MonoBehaviour {
         }        
     }
 
-    void UpdadeCooldowns()
+    void UpdateCooldowns()
     {
         //cooldown weapon
         if (bulletCoolDown < 1)
@@ -210,8 +226,8 @@ public class EnemyAI : MonoBehaviour {
         {
             foreach (Vector3 p in path)
             {
-                GameObject t = Instantiate(waypointMarker, p, this.transform.rotation);
-                Destroy(t, 1f);
+                //GameObject t = Instantiate(waypointMarker, p, this.transform.rotation);
+                //Destroy(t, 1f);
             }
         }        
     }
@@ -227,7 +243,7 @@ public class EnemyAI : MonoBehaviour {
             path = newPath;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
-            showPathNodes();
+            //showPathNodes();
         }
     }    
 
@@ -342,6 +358,8 @@ public class EnemyAI : MonoBehaviour {
             rb.AddForce(new Vector3(Random.Range(-force, force), force, Random.Range(-force, force)));
         }
 
+        FindObjectOfType<Spawner>().EnemyDied();
+
         Destroy(this.gameObject);
     }
 
@@ -372,8 +390,7 @@ public class EnemyAI : MonoBehaviour {
     }
 
     void SwapPatrolNodes(int a, int b)
-    {
-        Debug.Log("swap");
+    {        
         Transform temp;
         temp = patrolNodes[a];
         patrolNodes[a] = patrolNodes[b];

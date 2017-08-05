@@ -12,6 +12,7 @@ public class Manager : MonoBehaviour {
     static bool gameRunning = false;
     public SceneFader sf;
     public GameObject pauseMenu;
+    public Transform[] waypoints;
 
 	// Use this for initialization
 	void Start () {
@@ -56,6 +57,26 @@ public class Manager : MonoBehaviour {
     public static bool IsGameRunning()
     {
         return gameRunning;
+    }
+
+    public Transform[] GetWayPoints()
+    {
+        if (waypoints == null || waypoints.Length == 0)
+            Debug.Log("no waypoints");
+        else
+            Debug.Log("waypoints in manager");
+
+        return waypoints;
+    }
+
+    public void SetPlayer(GameObject newPlayer){
+
+        player = newPlayer;
+
+        if (player != null)
+        {
+            Debug.Log("player Set");
+        }
     }
 
 }

@@ -72,6 +72,8 @@ public class PlayerManager : MonoBehaviour {
             enemys[i].GetComponent<EnemyAI>().RemoveTarget();
         }
 
+        Camera.main.transform.parent = null;
+
         Destroy(this.gameObject);        
     }
 

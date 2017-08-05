@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\PickupItem.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\SceneFader.cs" />
+     <Compile Include="Assets\Spawner.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
